@@ -102,7 +102,6 @@ const Profile: React.FC = () => {
           <TextInput label="Data de nascimento" type="date" name="dob" value={form.dob || ''} onChange={handleChange} />
           <TextInput label="Endereço" name="address" value={form.address || ''} onChange={handleChange} />
           <TextInput label="Telefone" name="telephone" value={form.telephone || ''} onChange={handleChange} />
-          <TextInput label="Nova senha (opcional)" type="password" name="password" onChange={handleChange} />
         </Stack>
 
         <Group justify="flex-end" mt="md">
