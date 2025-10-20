@@ -32,6 +32,18 @@ export const authService = {
   },
 };
 
+export const userService = {
+  async getMe(): Promise<User> {
+    const response = await api.get('/users/me');
+    return response.data;
+  },
+
+  async updateMe(data: Partial<User>): Promise<User> {
+    const response = await api.put('/users/me', data);
+    return response.data;
+  },
+};
+
 export const vaccineService = {
   async getAll(): Promise<Vaccine[]> {
     const response = await api.get("/vaccines");

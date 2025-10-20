@@ -14,6 +14,7 @@ import StockManagement from './pages/admin/StockManagement';
 import PostStockManagement from './pages/admin/PostStockManagement';
 import VaccinationApplication from './pages/admin/VaccinationApplication';
 import StockHistory from './pages/admin/StockHistory';
+import Profile from './pages/Profile';
 
 function App() {
   const { user, loading } = useAuth();
@@ -40,6 +41,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="posts" element={<Posts />} />
         <Route path="vaccination-history" element={<VaccinationHistory />} />
+        <Route path="profile" element={<Profile />} />
         
         {/* Rotas administrativas */}
         {user?.role === 'admin' && (

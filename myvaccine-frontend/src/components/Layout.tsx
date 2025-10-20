@@ -82,6 +82,9 @@ const Layout: React.FC = () => {
 
               <Menu.Dropdown>
                 <Menu.Label>Conta</Menu.Label>
+                <Menu.Item component={Link} to="/profile">
+                  Meu Perfil
+                </Menu.Item>
                 <Menu.Item
                   leftSection={<IconLogout size={14} />}
                   onClick={logout}
