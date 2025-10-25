@@ -41,22 +41,63 @@ export class SeedService {
       console.log('✅ Usuário admin criado');
     }
 
-    // Criar usuário comum
-    const userExists = await this.userRepository.findOne({ where: { email: 'user@myvaccine.com' } });
-    if (!userExists) {
-      const userPassword = await bcrypt.hash('user123', 10);
-      const user = this.userRepository.create({
+    // Criar usuários comuns
+    const users = [
+      {
         cpf: '98765432100',
         name: 'Usuário Teste',
         email: 'user@myvaccine.com',
-        password: userPassword,
-        role: UserRole.USER,
+        password: 'user123',
         dob: '1995-05-15',
         address: 'Rua Usuário, 456',
         telephone: '11888888888',
-      });
-      await this.userRepository.save(user);
-      console.log('✅ Usuário comum criado');
+      },
+      {
+        cpf: '11122233344',
+        name: 'Luiz Fernando',
+        email: 'luiz.fernando@myvaccine.com',
+        password: 'luiz123',
+        dob: '1988-03-20',
+        address: 'Rua das Flores, 789',
+        telephone: '11977777777',
+      },
+      {
+        cpf: '55566677788',
+        name: 'Hatus Luiz',
+        email: 'hatus.luiz@myvaccine.com',
+        password: 'hatus123',
+        dob: '1992-07-10',
+        address: 'Av. Principal, 321',
+        telephone: '11966666666',
+      },
+      {
+        cpf: '99988877766',
+        name: 'Liliane Alves',
+        email: 'liliane.alves@myvaccine.com',
+        password: 'liliane123',
+        dob: '1990-11-25',
+        address: 'Rua da Paz, 654',
+        telephone: '11955555555',
+      },
+    ];
+
+    for (const userData of users) {
+      const userExists = await this.userRepository.findOne({ where: { email: userData.email } });
+      if (!userExists) {
+        const userPassword = await bcrypt.hash(userData.password, 10);
+        const user = this.userRepository.create({
+          cpf: userData.cpf,
+          name: userData.name,
+          email: userData.email,
+          password: userPassword,
+          role: UserRole.USER,
+          dob: userData.dob,
+          address: userData.address,
+          telephone: userData.telephone,
+        });
+        await this.userRepository.save(user);
+        console.log(`✅ Usuário ${userData.name} criado`);
+      }
     }
 
     // Criar vacinas
@@ -99,23 +140,23 @@ export class SeedService {
     // Criar postos
     const posts = [
       {
-        name: 'UBS Centro',
-        address: 'Rua da Matriz, 100',
-        city: 'Igarassu',
+        name: 'Posto de Saúde Centro I',
+        address: '112, Praça Poli, 42 - Centro',
+        city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
       },
       {
-        name: 'UBS Vila Nova',
-        address: 'Av. Beira Rio, 200',
-        city: 'Igarassu',
+        name: 'Posto de Saúde Centro II',
+        address: 'Centro, 53520-250',
+        city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
       },
       {
-        name: 'UBS Jardim',
-        address: 'Rua do Comércio, 300',
-        city: 'Igarassu',
+        name: 'PSF Alto São Miguel ',
+        address: '69, R. Murici, 1 - Alto São Miguel',
+        city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
       },
@@ -158,6 +199,10 @@ export class SeedService {
     console.log('🎉 Seed concluído com sucesso!');
     console.log('📋 Credenciais de teste:');
     console.log('   Admin: admin@myvaccine.com / admin123');
-    console.log('   User:  user@myvaccine.com / user123');
+    console.log('   Usuários:');
+    console.log('     - user@myvaccine.com / user123');
+    console.log('     - luiz.fernando@myvaccine.com / luiz123');
+    console.log('     - hatus.luiz@myvaccine.com / hatus123');
+    console.log('     - liliane.alves@myvaccine.com / liliane123');
   }
 }
