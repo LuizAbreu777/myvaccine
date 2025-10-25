@@ -9,10 +9,9 @@ import Posts from './pages/Posts';
 import VaccinationHistory from './pages/VaccinationHistory';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import VaccineManagement from './pages/admin/VaccineManagement';
-import PostManagement from './pages/admin/PostManagement';
-import StockManagement from './pages/admin/StockManagement';
-import PostStockManagement from './pages/admin/PostStockManagement';
+import PostAndStockManagement from './pages/admin/PostAndStockManagement';
 import VaccinationApplication from './pages/admin/VaccinationApplication';
+import AppliedVaccines from './pages/admin/AppliedVaccines';
 import StockHistory from './pages/admin/StockHistory';
 import Profile from './pages/Profile';
 
@@ -48,10 +47,9 @@ function App() {
           <>
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="admin/vaccines" element={<VaccineManagement />} />
-            <Route path="admin/posts" element={<PostManagement />} />
-            <Route path="admin/stocks" element={<StockManagement />} />
-            <Route path="admin/post-stocks" element={<PostStockManagement />} />
+            <Route path="admin/posts-stocks" element={<PostAndStockManagement />} />
             <Route path="admin/vaccination-application" element={<VaccinationApplication />} />
+            <Route path="admin/applied-vaccines" element={<AppliedVaccines />} />
             <Route path="admin/stock-history" element={<StockHistory />} />
           </>
         )}

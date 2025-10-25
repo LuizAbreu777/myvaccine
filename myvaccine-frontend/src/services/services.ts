@@ -150,6 +150,15 @@ export const vaccinationHistoryService = {
     const response = await api.post("/vaccination-history", history);
     return response.data;
   },
+
+  async update(id: number, history: Partial<VaccinationHistory>): Promise<VaccinationHistory> {
+    const response = await api.patch(`/vaccination-history/${id}`, history);
+    return response.data;
+  },
+
+  async delete(id: number): Promise<void> {
+    await api.delete(`/vaccination-history/${id}`);
+  },
 };
 
 export const stockHistoryService = {

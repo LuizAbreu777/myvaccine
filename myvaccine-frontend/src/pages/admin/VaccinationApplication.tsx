@@ -26,13 +26,18 @@ const VaccinationApplication: React.FC = () => {
   const form = useForm({
     initialValues: {
       user_cpf: '',
-      post_id: 0,
-      vaccine_id: 0,
+      post_id: '',
+      vaccine_id: '',
     },
     validate: {
-      user_cpf: (value: string) => (value.length < 11 ? 'CPF deve ter pelo menos 11 dígitos' : null),
-      post_id: (value: number) => (value <= 0 ? 'Selecione um posto' : null),
-      vaccine_id: (value: number) => (value <= 0 ? 'Selecione uma vacina' : null),
+      user_cpf: (value: string) => {
+        if (!value) return 'CPF é obrigatório';
+        const cleanCpf = value.replace(/\D/g, '');
+        if (cleanCpf.length !== 11) return 'CPF deve ter 11 dígitos';
+        return null;
+      },
+      post_id: (value: string) => (!value ? 'Selecione um posto' : null),
+      vaccine_id: (value: string) => (!value ? 'Selecione uma vacina' : null),
     },
   });
 
@@ -64,16 +69,15 @@ const VaccinationApplication: React.FC = () => {
     try {
       setSubmitting(true);
       
-      // Simular aplicação de vacina
-      const mockHistory = {
-        user_cpf: values.user_cpf,
-        vaccine_id: values.vaccine_id,
-        post_id: values.post_id,
+      const vaccinationData = {
+        user_cpf: values.user_cpf.replace(/\D/g, ''),
+        vaccine_id: parseInt(values.vaccine_id),
+        post_id: parseInt(values.post_id),
         batch: 'LOTE001',
         application_date: new Date().toISOString(),
       };
 
-      await vaccinationHistoryService.create(mockHistory);
+      await vaccinationHistoryService.create(vaccinationData);
       
       notifications.show({
         title: 'Sucesso',
@@ -83,10 +87,10 @@ const VaccinationApplication: React.FC = () => {
       });
       
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       notifications.show({
         title: 'Erro',
-        message: 'Erro ao aplicar vacina',
+        message: error.response?.data?.message || 'Erro ao aplicar vacina',
         color: 'red',
       });
     } finally {
@@ -120,6 +124,7 @@ const VaccinationApplication: React.FC = () => {
               label="CPF do Paciente"
               placeholder="000.000.000-00"
               required
+              maxLength={14}
               {...form.getInputProps('user_cpf')}
             />
 

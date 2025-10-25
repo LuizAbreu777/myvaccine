@@ -16,6 +16,7 @@ import {
   Text,
   TextInput,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
@@ -434,12 +435,18 @@ const StockHistoryPage: React.FC = () => {
           <Group justify="space-between" mb="md">
             <Title order={3}>Movimentações ({filteredHistory.length})</Title>
             <Group gap="xs">
-              <Button
-                variant="outline"
-                leftSection={<IconDownload size={16} />}
+              <Tooltip
+                label="Funcionalidade temporariamente indisponível"
+                position="top"
               >
-                Exportar
-              </Button>
+                <Button
+                  variant="outline"
+                  leftSection={<IconDownload size={16} />}
+                  disabled
+                >
+                  Exportar
+                </Button>
+              </Tooltip>
             </Group>
           </Group>
 
