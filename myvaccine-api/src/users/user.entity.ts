@@ -1,20 +1,28 @@
-import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { VaccinationHistory } from '../vaccination-history/vaccination-history.entity';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { VaccinationHistory } from "../vaccination-history/vaccination-history.entity";
+import { Dependent } from "./dependent.entity";
 
 export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'usuario'
+  ADMIN = "admin",
+  USER = "usuario",
 }
 
-@Entity('users')
+@Entity("users")
 export class User {
   @PrimaryColumn({ length: 14 })
   cpf: string;
 
   @Column({
-    type: 'varchar',
+    type: "varchar",
     length: 20,
-    default: UserRole.USER
+    default: UserRole.USER,
   })
   role: UserRole;
 
@@ -27,7 +35,7 @@ export class User {
   @Column({ length: 100, unique: true })
   email: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: "date" })
   dob: Date;
 
   @Column({ length: 255 })
@@ -42,6 +50,12 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToMany(() => VaccinationHistory, vaccinationHistory => vaccinationHistory.user)
+  @OneToMany(
+    () => VaccinationHistory,
+    (vaccinationHistory) => vaccinationHistory.user
+  )
   vaccinationHistory: VaccinationHistory[];
+
+  @OneToMany(() => Dependent, (dependent) => dependent.user)
+  dependents: Dependent[];
 }
