@@ -19,7 +19,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Request() req) {
+    // Buscar usuário completo do banco de dados usando o CPF do JWT
+    return await this.authService.getProfile(req.user.cpf);
   }
 }

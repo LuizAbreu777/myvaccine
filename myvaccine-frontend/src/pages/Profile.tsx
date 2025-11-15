@@ -5,6 +5,7 @@ import { userService } from '../services/services';
 import {
   Card,
   Title,
+  Text,
   TextInput,
   Button,
   Group,
@@ -16,7 +17,7 @@ import {
 import { IconCheck, IconAlertCircle } from '@tabler/icons-react';
 
 const Profile: React.FC = () => {
-    useAuth();
+  const { user } = useAuth();
   const [form, setForm] = useState<Partial<User>>({});
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -75,12 +76,17 @@ const Profile: React.FC = () => {
     <Card shadow="sm" radius="md" withBorder style={{ maxWidth: 720, margin: '0 auto' }}>
       <Group justify="space-between" align="center" mb="sm">
         <Group>
-          <Avatar color="blue" radius="xl">
-            {form.name?.charAt(0).toUpperCase()}
+          <Avatar color="blue" radius="xl" size="lg">
+            {user?.name?.charAt(0).toUpperCase() || form.name?.charAt(0).toUpperCase()}
           </Avatar>
           <div>
             <Title order={3}>Meu Perfil</Title>
-            <div style={{ fontSize: 12, color: '#666' }}>CPF {form.cpf}</div>
+            {user?.name && (
+              <Text size="lg" fw={600} c="blue" mt={4}>
+                {user.name}
+              </Text>
+            )}
+            <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>CPF {form.cpf}</div>
           </div>
         </Group>
       </Group>

@@ -10,18 +10,22 @@ import {
   Text,
   Alert,
   TextInput,
+  Badge,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
-import { vaccinationHistoryService, postService, vaccineService } from '../../services/services';
+import { IconAlertCircle, IconCheck, IconUsers } from '@tabler/icons-react';
+import { vaccinationHistoryService, postService, vaccineService, dependentService } from '../../services/services';
 import { Post, Vaccine } from '../../types';
 import { notifications } from '@mantine/notifications';
+import { useDebouncedValue } from '@mantine/hooks';
 
 const VaccinationApplication: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [vaccines, setVaccines] = useState<Vaccine[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [dependentInfo, setDependentInfo] = useState<{ isDependent: boolean; name?: string; relationship?: string } | null>(null);
+  const [checkingCpf, setCheckingCpf] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -41,9 +45,32 @@ const VaccinationApplication: React.FC = () => {
     },
   });
 
+  const [debouncedCpf] = useDebouncedValue(form.values.user_cpf, 500);
+
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    const checkDependent = async () => {
+      const cleanCpf = debouncedCpf.replace(/\D/g, '');
+      if (cleanCpf.length === 11) {
+        setCheckingCpf(true);
+        try {
+          const info = await dependentService.checkCpf(debouncedCpf);
+          setDependentInfo(info);
+        } catch (error) {
+          setDependentInfo({ isDependent: false });
+        } finally {
+          setCheckingCpf(false);
+        }
+      } else {
+        setDependentInfo(null);
+      }
+    };
+
+    checkDependent();
+  }, [debouncedCpf]);
 
   const loadData = async () => {
     try {
@@ -120,13 +147,42 @@ const VaccinationApplication: React.FC = () => {
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
-            <TextInput
-              label="CPF do Paciente"
-              placeholder="000.000.000-00"
-              required
-              maxLength={14}
-              {...form.getInputProps('user_cpf')}
-            />
+            <div>
+              <TextInput
+                label="CPF do Paciente"
+                placeholder="000.000.000-00"
+                required
+                maxLength={14}
+                {...form.getInputProps('user_cpf')}
+              />
+              {checkingCpf && (
+                <Text size="xs" c="dimmed" mt={4}>
+                  Verificando...
+                </Text>
+              )}
+              {dependentInfo && !checkingCpf && (
+                <Group gap="xs" mt={8}>
+                  {dependentInfo.isDependent ? (
+                    <>
+                      <Badge
+                        leftSection={<IconUsers size={12} />}
+                        color="orange"
+                        variant="light"
+                      >
+                        Dependente
+                      </Badge>
+                      <Text size="sm" c="dimmed">
+                        {dependentInfo.name} ({dependentInfo.relationship})
+                      </Text>
+                    </>
+                  ) : (
+                    <Badge color="green" variant="light">
+                      Usuário
+                    </Badge>
+                  )}
+                </Group>
+              )}
+            </div>
 
             <Select
               label="Posto de Vacinação"

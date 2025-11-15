@@ -13,7 +13,27 @@ export class UsersService {
   ) {}
 
   async findByCpf(cpf: string): Promise<Omit<User, 'password'>> {
-    const user = await this.userRepository.findOne({ where: { cpf } });
+    // Normalizar CPF (remover pontos e traços)
+    const normalizeCPF = (cpf: string) => cpf.replace(/[.-]/g, '');
+    const formatCPF = (cpf: string) => {
+      const normalized = normalizeCPF(cpf);
+      if (normalized.length === 11) {
+        return normalized.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      }
+      return cpf;
+    };
+
+    const normalized = normalizeCPF(cpf);
+    const formatted = formatCPF(normalized);
+
+    // Tenta encontrar com CPF formatado primeiro
+    let user = await this.userRepository.findOne({ where: { cpf: formatted } });
+    
+    // Se não encontrou, tenta sem formatação
+    if (!user && normalized.length === 11) {
+      user = await this.userRepository.findOne({ where: { cpf: normalized } });
+    }
+
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }

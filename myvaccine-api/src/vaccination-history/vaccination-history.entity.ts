@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../users/user.entity';
+import { Dependent } from '../users/dependent.entity';
 import { Vaccine } from '../vaccines/vaccine.entity';
 import { Post } from '../posts/post.entity';
 
@@ -10,6 +11,9 @@ export class VaccinationHistory {
 
   @Column({ length: 14 })
   user_cpf: string;
+
+  @Column({ default: false })
+  is_dependent: boolean;
 
   @Column()
   vaccine_id: number;
@@ -29,9 +33,15 @@ export class VaccinationHistory {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, user => user.vaccinationHistory)
+  @ManyToOne(() => User, user => user.vaccinationHistory, { nullable: true })
   @JoinColumn({ name: 'user_cpf' })
   user: User;
+
+  // Relação com Dependent usando a mesma coluna user_cpf
+  // O TypeORM permite isso, mas precisamos usar QueryBuilder para joins condicionais
+  @ManyToOne(() => Dependent, { nullable: true })
+  @JoinColumn({ name: 'user_cpf', referencedColumnName: 'cpf' })
+  dependent: Dependent;
 
   @ManyToOne(() => Vaccine, vaccine => vaccine.vaccinationHistory)
   @JoinColumn({ name: 'vaccine_id' })

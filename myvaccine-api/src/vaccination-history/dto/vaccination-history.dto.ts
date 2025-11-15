@@ -4,12 +4,17 @@ import {
   IsOptional,
   IsString,
   MinLength,
+  IsBoolean,
 } from "class-validator";
 
 export class CreateVaccinationHistoryDto {
   @IsString()
   @MinLength(11)
   user_cpf: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_dependent?: boolean;
 
   @IsNumber()
   vaccine_id: number;

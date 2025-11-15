@@ -46,6 +46,7 @@ export interface Stock {
 export interface VaccinationHistory {
   id: number;
   user_cpf: string;
+  is_dependent: boolean;
   vaccine_id: number;
   post_id: number;
   batch: string;
@@ -53,6 +54,7 @@ export interface VaccinationHistory {
   created_at: string;
   updated_at: string;
   user?: User;
+  dependent?: Dependent;
   vaccine?: Vaccine;
   post?: Post;
 }
@@ -111,4 +113,14 @@ export interface StockHistoryStats {
   totalAdjustments: number;
   totalExpired: number;
   totalTransfers: number;
+}
+
+export interface Dependent {
+  cpf: string;
+  name: string;
+  dob: string;
+  relationship: string;
+  created_at: string;
+  updated_at: string;
+  user_cpf?: string;
 }

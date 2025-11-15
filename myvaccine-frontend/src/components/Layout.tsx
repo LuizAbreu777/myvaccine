@@ -19,6 +19,7 @@ import {
   IconVaccine,
   IconTimeline,
   IconChevronDown,
+  IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -27,10 +28,32 @@ import { useAuth } from "../hooks/useAuth";
 const Layout: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  
+  // Obter nome do usuário do estado ou do localStorage
+  const getUserName = () => {
+    if (user?.name) return user.name;
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        return parsed.name || 'Usuário';
+      } catch {
+        return 'Usuário';
+      }
+    }
+    return 'Usuário';
+  };
+  
+  const userName = getUserName();
 
   const navItems = [
     { label: "Home", icon: IconHome, href: "/" },
     { label: "Postos de Vacinação", icon: IconMapPin, href: "/posts" },
+    {
+      label: "Dependentes",
+      icon: IconUsers,
+      href: "/dependents",
+    },
     {
       label: "Histórico de Vacinas",
       icon: IconHistory,
@@ -108,9 +131,9 @@ const Layout: React.FC = () => {
                     e.currentTarget.style.backgroundColor = 'transparent';
                   }}
                 >
-                  <Group gap="xs">
+                  <Group gap="sm">
                     <Avatar 
-                      size="sm" 
+                      size="md" 
                       color="gray"
                       style={{
                         backgroundColor: '#f1f5f9',
@@ -119,11 +142,18 @@ const Layout: React.FC = () => {
                         border: '1px solid #e2e8f0',
                       }}
                     >
-                      {user?.name?.charAt(0).toUpperCase()}
+                      {userName.charAt(0).toUpperCase()}
                     </Avatar>
-                    <Text size="sm" c="dark" fw={500}>
-                      {user?.name}
-                    </Text>
+                    <div>
+                      <Text size="sm" c="dark" fw={600} style={{ lineHeight: 1.2 }}>
+                        {userName}
+                      </Text>
+                      {user?.role && (
+                        <Text size="xs" c="dimmed" style={{ lineHeight: 1 }}>
+                          {user.role === 'admin' ? 'Administrador' : 'Usuário'}
+                        </Text>
+                      )}
+                    </div>
                     <IconChevronDown size={14} color="#64748b" />
                   </Group>
                 </UnstyledButton>

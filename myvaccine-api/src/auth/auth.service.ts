@@ -102,4 +102,14 @@ export class AuthService {
       throw new Error('Erro interno do servidor');
     }
   }
+
+  async getProfile(cpf: string) {
+    const user = await this.userRepository.findOne({ where: { cpf } });
+    if (!user) {
+      throw new UnauthorizedException("Usuário não encontrado");
+    }
+    // Retornar dados do usuário sem a senha
+    const { password, ...userResponse } = user;
+    return userResponse;
+  }
 }

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Posts from './pages/Posts';
 import VaccinationHistory from './pages/VaccinationHistory';
+import Dependents from './pages/Dependents';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import VaccineManagement from './pages/admin/VaccineManagement';
 import PostAndStockManagement from './pages/admin/PostAndStockManagement';
@@ -40,6 +41,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="posts" element={<Posts />} />
         <Route path="vaccination-history" element={<VaccinationHistory />} />
+        <Route path="dependents" element={<Dependents />} />
         <Route path="profile" element={<Profile />} />
         
         {/* Rotas administrativas */}

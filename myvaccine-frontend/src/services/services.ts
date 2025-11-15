@@ -11,6 +11,7 @@ import {
   StockHistory,
   StockHistoryStats,
   StockMovementType,
+  Dependent,
 } from "../types";
 
 export const authService = {
@@ -140,12 +141,28 @@ export const vaccinationHistoryService = {
   },
 
   async getByUser(cpf: string): Promise<VaccinationHistory[]> {
-    const response = await api.get(`/vaccination-history/user/${cpf}`);
+    // Normalizar CPF (remover pontos e traços) antes de enviar
+    const normalizedCpf = cpf.replace(/[.-]/g, '');
+    const response = await api.get(`/vaccination-history/user/${normalizedCpf}`);
+    return response.data;
+  },
+
+  async getByUserDependents(cpf: string): Promise<VaccinationHistory[]> {
+    // Normalizar CPF (remover pontos e traços) antes de enviar
+    const normalizedCpf = cpf.replace(/[.-]/g, '');
+    const response = await api.get(`/vaccination-history/user/${normalizedCpf}/dependents`);
+    return response.data;
+  },
+
+  async getByUserAll(cpf: string): Promise<VaccinationHistory[]> {
+    // Normalizar CPF (remover pontos e traços) antes de enviar
+    const normalizedCpf = cpf.replace(/[.-]/g, '');
+    const response = await api.get(`/vaccination-history/user/${normalizedCpf}/all`);
     return response.data;
   },
 
   async create(
-    history: Omit<VaccinationHistory, "id" | "created_at" | "updated_at">
+    history: Omit<VaccinationHistory, "id" | "created_at" | "updated_at" | "is_dependent">
   ): Promise<VaccinationHistory> {
     const response = await api.post("/vaccination-history", history);
     return response.data;
@@ -196,5 +213,49 @@ export const stockHistoryService = {
   async getByDateRange(startDate: string, endDate: string): Promise<StockHistory[]> {
     const response = await api.get(`/stock-history/date-range?startDate=${startDate}&endDate=${endDate}`);
     return response.data;
+  },
+};
+
+export const dependentService = {
+  async getAll(): Promise<Dependent[]> {
+    const response = await api.get("/dependents");
+    return response.data;
+  },
+
+  async getByCpf(cpf: string): Promise<Dependent> {
+    const response = await api.get(`/dependents/${cpf}`);
+    return response.data;
+  },
+
+  async checkCpf(cpf: string): Promise<{ isDependent: boolean; name?: string; relationship?: string }> {
+    const cleanCpf = cpf.replace(/\D/g, '');
+    if (cleanCpf.length !== 11) {
+      return { isDependent: false };
+    }
+    try {
+      const response = await api.get(`/dependents/check/${cleanCpf}`);
+      return response.data;
+    } catch (error) {
+      return { isDependent: false };
+    }
+  },
+
+  async create(
+    dependent: Omit<Dependent, "created_at" | "updated_at" | "user_cpf">
+  ): Promise<Dependent> {
+    const response = await api.post("/dependents", dependent);
+    return response.data;
+  },
+
+  async update(
+    cpf: string,
+    dependent: Partial<Omit<Dependent, "cpf" | "created_at" | "updated_at" | "user_cpf">>
+  ): Promise<Dependent> {
+    const response = await api.put(`/dependents/${cpf}`, dependent);
+    return response.data;
+  },
+
+  async delete(cpf: string): Promise<void> {
+    await api.delete(`/dependents/${cpf}`);
   },
 };
