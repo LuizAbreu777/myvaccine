@@ -5,16 +5,29 @@ import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
+import { ThemeProvider, useTheme } from './hooks/useTheme';
 import App from './App';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
+import './index.css';
 
-// Tema personalizado com tons de azul
+// Tema personalizado
 const theme = createTheme({
   primaryColor: 'blue',
   colors: {
-    // Paleta de azuis médicos
+    slate: [
+      '#f8fafc',
+      '#f1f5f9',
+      '#e2e8f0',
+      '#cbd5e1',
+      '#94a3b8',
+      '#64748b',
+      '#475569',
+      '#334155',
+      '#1e293b',
+      '#0f172a'
+    ],
     medical: [
       '#f0f9ff',
       '#e0f2fe', 
@@ -27,33 +40,8 @@ const theme = createTheme({
       '#075985',
       '#0c4a6e'
     ],
-    health: [
-      '#f8fafc',
-      '#e2e8f0',
-      '#cbd5e1',
-      '#94a3b8',
-      '#64748b',
-      '#475569',
-      '#334155',
-      '#1e293b',
-      '#0f172a',
-      '#020617'
-    ],
-    vaccine: [
-      '#eff6ff',
-      '#dbeafe',
-      '#bfdbfe',
-      '#93c5fd',
-      '#60a5fa',
-      '#3b82f6',
-      '#2563eb',
-      '#1d4ed8',
-      '#1e40af',
-      '#1e3a8a'
-    ]
   },
   fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
-  fontFamilyMonospace: 'Monaco, Courier, monospace',
   headings: {
     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
     fontWeight: '600',
@@ -64,13 +52,6 @@ const theme = createTheme({
     md: '8px',
     lg: '12px',
     xl: '16px',
-  },
-  shadows: {
-    xs: '0 1px 2px rgba(0, 0, 0, 0.05)',
-    sm: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   components: {
     Button: {
@@ -93,12 +74,12 @@ const theme = createTheme({
   },
 });
 
-const container = document.getElementById('root');
-const root = createRoot(container!);
-
-root.render(
-  <BrowserRouter>
-    <MantineProvider theme={theme}>
+// Componente wrapper para aplicar o tema
+const AppWithTheme: React.FC = () => {
+  const { colorScheme } = useTheme();
+  
+  return (
+    <MantineProvider theme={theme} forceColorScheme={colorScheme}>
       <ModalsProvider>
         <Notifications />
         <AuthProvider>
@@ -106,5 +87,16 @@ root.render(
         </AuthProvider>
       </ModalsProvider>
     </MantineProvider>
+  );
+};
+
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
+  <BrowserRouter>
+    <ThemeProvider>
+      <AppWithTheme />
+    </ThemeProvider>
   </BrowserRouter>
 );

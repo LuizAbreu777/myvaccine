@@ -31,6 +31,7 @@ import {
   IconCheck,
 } from '@tabler/icons-react';
 import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
 import { 
   vaccinationHistoryService, 
   postService, 
@@ -48,6 +49,8 @@ interface PostWithDistance extends Post {
 const UserHome: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { colorScheme } = useTheme();
+  const isDark = colorScheme === 'dark';
   const [loading, setLoading] = useState(true);
   const [vaccinations, setVaccinations] = useState<VaccinationHistory[]>([]);
   const [posts, setPosts] = useState<PostWithDistance[]>([]);
@@ -150,7 +153,7 @@ const UserHome: React.FC = () => {
     <Container size="xl" py="xl">
       <Stack gap="xl">
         <Box>
-          <Title order={1} mb={4} fw={700} c="dark.7">
+          <Title order={1} mb={4} fw={700}>
             Olá, {user?.name?.split(' ')[0]} 👋
           </Title>
           <Text c="dimmed" size="lg">
@@ -165,7 +168,7 @@ const UserHome: React.FC = () => {
           {user && (
             <Box style={{ width: '320px', minWidth: '320px', flexShrink: 0 }}>
               <Group justify="space-between" mb="md">
-                <Title order={4} fw={700}>📋 Carteirinha</Title>
+                <Title order={4} fw={700}>Carteirinha</Title>
                 <Text size="xs" c="blue" style={{ cursor: 'pointer' }} onClick={() => navigate('/vaccination-history')}>
                   Ver tudo
                 </Text>
@@ -272,7 +275,7 @@ const UserHome: React.FC = () => {
                     <Box style={{ height: '3px', background: 'linear-gradient(90deg, #00f2fe 0%, #4facfe 25%, #667eea 50%, #764ba2 75%, #f5576c 100%)' }} />
 
                     {/* Lista de Vacinas */}
-                    <Box p="sm" style={{ backgroundColor: 'white', minHeight: '380px' }}>
+                    <Box p="sm" style={{ backgroundColor: isDark ? '#1e293b' : 'white', minHeight: '380px' }}>
                       {currentVaccinations.length === 0 ? (
                         <Center py="xl">
                           <Stack align="center" gap="xs">
@@ -293,7 +296,7 @@ const UserHome: React.FC = () => {
                                 p="xs" 
                                 radius="md"
                                 style={{ 
-                                  backgroundColor: `var(--mantine-color-${color}-0)`,
+                                  backgroundColor: isDark ? `var(--mantine-color-${color}-9)` : `var(--mantine-color-${color}-0)`,
                                   borderLeft: `3px solid var(--mantine-color-${color}-5)`,
                                 }}
                               >
@@ -323,7 +326,7 @@ const UserHome: React.FC = () => {
                     </Box>
 
                     {/* Footer */}
-                    <Box px="sm" py="xs" style={{ backgroundColor: '#f8f9fa', borderTop: '1px solid #e9ecef' }}>
+                    <Box px="sm" py="xs" style={{ backgroundColor: isDark ? '#0f172a' : '#f8f9fa', borderTop: `1px solid ${isDark ? '#334155' : '#e9ecef'}` }}>
                       <Group justify="space-between">
                         <Group gap={4}>
                           <IconShieldCheck size={12} color="#228be6" />
@@ -382,7 +385,7 @@ const UserHome: React.FC = () => {
                 <Stack gap="sm">
                   <Group justify="space-between">
                     <Group gap="xs">
-                      <Title order={4} fw={700}>💉 Vacinas Disponíveis</Title>
+                      <Title order={4} fw={700}>Vacinas Disponíveis</Title>
                       <Badge color="blue" variant="light" size="xs">
                         {nearestPost.name.length > 20 ? nearestPost.name.substring(0, 20) + '...' : nearestPost.name}
                         {nearestPost.distance !== undefined && (
@@ -458,7 +461,7 @@ const UserHome: React.FC = () => {
               <Stack gap="sm">
                 <Group justify="space-between">
                   <Group gap="xs">
-                    <Title order={4} fw={700}>🏥 Postos Próximos</Title>
+                    <Title order={4} fw={700}>Postos Próximos</Title>
                     {locationError && <Badge size="xs" color="gray" variant="light">{locationError}</Badge>}
                   </Group>
                   <Text size="xs" c="blue" style={{ cursor: 'pointer' }} onClick={() => navigate('/posts')}>Ver todos</Text>
@@ -511,7 +514,7 @@ const AdminHome: React.FC = () => {
     <Container size="xl" py="xl">
       <Stack gap="xl">
         <Box>
-          <Title order={1} mb={4} fw={700} c="dark.7">
+          <Title order={1} mb={4} fw={700}>
             Olá, {user?.name?.split(' ')[0]} 👋
           </Title>
           <Text c="dimmed" size="lg">

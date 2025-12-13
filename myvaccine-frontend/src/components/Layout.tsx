@@ -8,6 +8,8 @@ import {
   UnstyledButton,
   Box,
   ThemeIcon,
+  ActionIcon,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconBuilding,
@@ -22,19 +24,42 @@ import {
   IconChevronDown,
   IconUsers,
   IconChevronRight,
+  IconSun,
+  IconMoon,
 } from "@tabler/icons-react";
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../hooks/useTheme";
 
 interface NavItemProps {
   icon: React.ElementType;
   label: string;
   href: string;
   active: boolean;
+  isDark: boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active }) => {
+const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active, isDark }) => {
+  // Cores baseadas no modo
+  const colors = isDark ? {
+    activeBg: '#2563eb',
+    activeShadow: 'rgba(37, 99, 235, 0.4)',
+    hoverBg: '#334155',
+    hoverText: '#60a5fa',
+    inactiveText: '#94a3b8',
+    iconBg: '#334155',
+    iconActiveText: 'white',
+  } : {
+    activeBg: '#228be6',
+    activeShadow: 'rgba(34, 139, 230, 0.4)',
+    hoverBg: '#f1f5f9',
+    hoverText: '#228be6',
+    inactiveText: '#64748b',
+    iconBg: '#f1f5f9',
+    iconActiveText: 'white',
+  };
+
   return (
     <UnstyledButton
       component={Link}
@@ -47,22 +72,22 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active }) =>
         borderRadius: '12px',
         textDecoration: 'none',
         transition: 'all 0.2s ease',
-        backgroundColor: active ? '#228be6' : 'transparent',
-        color: active ? 'white' : '#64748b',
-        boxShadow: active ? '0 4px 12px rgba(34, 139, 230, 0.4)' : 'none',
+        backgroundColor: active ? colors.activeBg : 'transparent',
+        color: active ? 'white' : colors.inactiveText,
+        boxShadow: active ? `0 4px 12px ${colors.activeShadow}` : 'none',
         fontWeight: active ? 600 : 500,
         position: 'relative',
       }}
       onMouseEnter={(e) => {
         if (!active) {
-          e.currentTarget.style.backgroundColor = '#f1f5f9';
-          e.currentTarget.style.color = '#228be6';
+          e.currentTarget.style.backgroundColor = colors.hoverBg;
+          e.currentTarget.style.color = colors.hoverText;
         }
       }}
       onMouseLeave={(e) => {
         if (!active) {
           e.currentTarget.style.backgroundColor = 'transparent';
-          e.currentTarget.style.color = '#64748b';
+          e.currentTarget.style.color = colors.inactiveText;
         }
       }}
     >
@@ -72,8 +97,8 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active }) =>
         variant={active ? 'white' : 'light'}
         color={active ? 'white' : 'gray'}
         style={{
-          backgroundColor: active ? 'rgba(255, 255, 255, 0.2)' : '#f1f5f9',
-          color: active ? 'white' : '#64748b',
+          backgroundColor: active ? 'rgba(255, 255, 255, 0.2)' : colors.iconBg,
+          color: active ? 'white' : colors.inactiveText,
         }}
       >
         <Icon size={18} />
@@ -98,7 +123,42 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active }) =>
 const Layout: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const { colorScheme, toggleColorScheme } = useTheme();
+  const isDark = colorScheme === 'dark';
   
+  // Cores do tema
+  const themeColors = isDark ? {
+    headerBg: '#0f172a',
+    headerBorder: '#1e293b',
+    navbarBg: '#020617',
+    navbarBorder: '#1e293b',
+    mainBg: '#0f172a',
+    cardBg: '#1e293b',
+    textPrimary: '#f1f5f9',
+    textSecondary: '#94a3b8',
+    textMuted: '#64748b',
+    avatarBg: '#334155',
+    avatarBorder: '#475569',
+    divider: '#334155',
+    hoverBg: 'rgba(255, 255, 255, 0.05)',
+    logoutHoverBg: '#7f1d1d',
+  } : {
+    headerBg: 'white',
+    headerBorder: '#e2e8f0',
+    navbarBg: 'white',
+    navbarBorder: '#e2e8f0',
+    mainBg: '#f8fafc',
+    cardBg: '#f8fafc',
+    textPrimary: '#1e293b',
+    textSecondary: '#475569',
+    textMuted: '#64748b',
+    avatarBg: '#f1f5f9',
+    avatarBorder: '#e2e8f0',
+    divider: '#e2e8f0',
+    hoverBg: 'rgba(0, 0, 0, 0.05)',
+    logoutHoverBg: '#fee2e2',
+  };
+
   // Obter nome do usuário do estado ou do localStorage
   const getUserName = () => {
     if (user?.name) return user.name;
@@ -139,15 +199,15 @@ const Layout: React.FC = () => {
       padding="md"
       styles={{
         main: {
-          backgroundColor: '#f8fafc',
+          backgroundColor: themeColors.mainBg,
         },
       }}
     >
       <AppShell.Header
         style={{
-          background: 'white',
-          borderBottom: '1px solid #e2e8f0',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+          background: themeColors.headerBg,
+          borderBottom: `1px solid ${themeColors.headerBorder}`,
+          boxShadow: isDark ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.05)',
         }}
       >
         <Group h="100%" px="md" justify="space-between">
@@ -157,7 +217,7 @@ const Layout: React.FC = () => {
               alt="MyVaccine"
               style={{ 
                 height: 40,
-                filter: 'drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.3))',
+                filter: isDark ? 'brightness(1.2) drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.5))' : 'drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.3))',
                 cursor: 'pointer',
                 imageRendering: 'auto',
                 objectFit: 'contain',
@@ -174,7 +234,23 @@ const Layout: React.FC = () => {
             />
           </Group>
 
-          <Group>
+          <Group gap="sm">
+            {/* Botão de alternar tema */}
+            <Tooltip label={isDark ? 'Modo Claro' : 'Modo Escuro'} withArrow>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                radius="md"
+                onClick={toggleColorScheme}
+                style={{
+                  color: isDark ? '#fbbf24' : '#64748b',
+                  backgroundColor: isDark ? 'rgba(251, 191, 36, 0.1)' : 'transparent',
+                }}
+              >
+                {isDark ? <IconSun size={20} /> : <IconMoon size={20} />}
+              </ActionIcon>
+            </Tooltip>
+
             <Menu shadow="lg" width={200} radius="md">
               <Menu.Target>
                 <UnstyledButton
@@ -184,7 +260,7 @@ const Layout: React.FC = () => {
                     transition: 'background-color 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+                    e.currentTarget.style.backgroundColor = themeColors.hoverBg;
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = 'transparent';
@@ -195,30 +271,30 @@ const Layout: React.FC = () => {
                       size="md" 
                       color="gray"
                       style={{
-                        backgroundColor: '#f1f5f9',
-                        color: '#475569',
+                        backgroundColor: themeColors.avatarBg,
+                        color: themeColors.textSecondary,
                         fontWeight: '600',
-                        border: '1px solid #e2e8f0',
+                        border: `1px solid ${themeColors.avatarBorder}`,
                       }}
                     >
                       {userName.charAt(0).toUpperCase()}
                     </Avatar>
                     <div>
-                      <Text size="sm" c="dark" fw={600} style={{ lineHeight: 1.2 }}>
+                      <Text size="sm" fw={600} style={{ lineHeight: 1.2, color: themeColors.textPrimary }}>
                         {userName}
                       </Text>
                       {user?.role && (
-                        <Text size="xs" c="dimmed" style={{ lineHeight: 1 }}>
+                        <Text size="xs" style={{ lineHeight: 1, color: themeColors.textMuted }}>
                           {user.role === 'admin' ? 'Administrador' : 'Usuário'}
                         </Text>
                       )}
                     </div>
-                    <IconChevronDown size={14} color="#64748b" />
+                    <IconChevronDown size={14} color={themeColors.textMuted} />
                   </Group>
                 </UnstyledButton>
               </Menu.Target>
 
-              <Menu.Dropdown>
+              <Menu.Dropdown style={{ backgroundColor: isDark ? '#1e293b' : undefined }}>
                 <Menu.Label>Conta</Menu.Label>
                 <Menu.Item 
                   component={Link} 
@@ -244,13 +320,13 @@ const Layout: React.FC = () => {
       <AppShell.Navbar 
         p="md"
         style={{
-          backgroundColor: 'white',
-          borderRight: '1px solid #e2e8f0',
+          backgroundColor: themeColors.navbarBg,
+          borderRight: `1px solid ${themeColors.navbarBorder}`,
         }}
       >
         <Stack gap="xs" style={{ flex: 1 }}>
           {/* Menu Principal */}
-          <Text size="xs" fw={600} c="dimmed" tt="uppercase" mb={4} ml={4}>
+          <Text size="xs" fw={600} tt="uppercase" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
             Menu Principal
           </Text>
 
@@ -262,6 +338,7 @@ const Layout: React.FC = () => {
                 label={item.label}
                 href={item.href}
                 active={location.pathname === item.href}
+                isDark={isDark}
               />
             ))}
           </Stack>
@@ -269,7 +346,7 @@ const Layout: React.FC = () => {
           {/* Menu Admin */}
           {user?.role === "admin" && (
             <>
-              <Text size="xs" fw={600} c="dimmed" tt="uppercase" mt="xl" mb={4} ml={4}>
+              <Text size="xs" fw={600} tt="uppercase" mt="xl" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
                 Administração
               </Text>
 
@@ -281,6 +358,7 @@ const Layout: React.FC = () => {
                     label={item.label}
                     href={item.href}
                     active={location.pathname === item.href}
+                    isDark={isDark}
                   />
                 ))}
               </Stack>
@@ -293,13 +371,13 @@ const Layout: React.FC = () => {
           mt="auto"
           pt="md"
           style={{
-            borderTop: '1px solid #e2e8f0',
+            borderTop: `1px solid ${themeColors.divider}`,
           }}
         >
           <Group
             p="sm"
             style={{
-              backgroundColor: '#f8fafc',
+              backgroundColor: themeColors.cardBg,
               borderRadius: '12px',
             }}
           >
@@ -307,19 +385,19 @@ const Layout: React.FC = () => {
               size="md" 
               radius="xl"
               style={{
-                backgroundColor: '#f1f5f9',
-                color: '#475569',
+                backgroundColor: themeColors.avatarBg,
+                color: themeColors.textSecondary,
                 fontWeight: '600',
-                border: '1px solid #e2e8f0',
+                border: `1px solid ${themeColors.avatarBorder}`,
               }}
             >
               {userName.charAt(0).toUpperCase()}
             </Avatar>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <Text size="sm" fw={600} c="dark" truncate>
+              <Text size="sm" fw={600} truncate style={{ color: themeColors.textPrimary }}>
                 {userName}
               </Text>
-              <Text size="xs" c="dimmed" truncate>
+              <Text size="xs" truncate style={{ color: themeColors.textMuted }}>
                 {user?.email}
               </Text>
             </div>
@@ -328,16 +406,16 @@ const Layout: React.FC = () => {
               style={{
                 padding: '8px',
                 borderRadius: '8px',
-                color: '#64748b',
+                color: themeColors.textMuted,
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#fee2e2';
+                e.currentTarget.style.backgroundColor = themeColors.logoutHoverBg;
                 e.currentTarget.style.color = '#ef4444';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#64748b';
+                e.currentTarget.style.color = themeColors.textMuted;
               }}
             >
               <IconLogout size={18} />

@@ -1,3 +1,4 @@
+/* ========== MODO CLARO (padrão) ========== */
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,16 +6,114 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: #f8fafc;
   min-height: 100vh;
+  transition: background-color 0.3s ease;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ========== MODO ESCURO ========== */
+body[data-theme="dark"] {
+  background: #0f172a;
 }
 
-/* Animações globais */
+/* Cards e Paper no modo escuro */
+body[data-theme="dark"] .mantine-Paper-root,
+body[data-theme="dark"] .mantine-Card-root {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Tabelas no modo escuro */
+body[data-theme="dark"] .mantine-Table-table {
+  background-color: #1e293b;
+}
+
+body[data-theme="dark"] .mantine-Table-thead {
+  background-color: #0f172a;
+}
+
+body[data-theme="dark"] .mantine-Table-th {
+  background-color: #0f172a;
+  border-color: #334155 !important;
+  color: #e2e8f0;
+}
+
+body[data-theme="dark"] .mantine-Table-td {
+  border-color: #334155 !important;
+}
+
+body[data-theme="dark"] .mantine-Table-tr {
+  border-color: #334155;
+}
+
+body[data-theme="dark"] .mantine-Table-tr:hover {
+  background-color: #334155 !important;
+}
+
+/* Inputs no modo escuro */
+body[data-theme="dark"] .mantine-Input-input,
+body[data-theme="dark"] .mantine-TextInput-input,
+body[data-theme="dark"] .mantine-NumberInput-input,
+body[data-theme="dark"] .mantine-Textarea-input,
+body[data-theme="dark"] .mantine-Select-input,
+body[data-theme="dark"] .mantine-DateInput-input {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+body[data-theme="dark"] .mantine-Input-input::placeholder {
+  color: #64748b !important;
+}
+
+/* Dropdowns no modo escuro */
+body[data-theme="dark"] .mantine-Select-dropdown,
+body[data-theme="dark"] .mantine-Menu-dropdown,
+body[data-theme="dark"] .mantine-Popover-dropdown {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body[data-theme="dark"] .mantine-Select-option[data-selected] {
+  background-color: #2563eb !important;
+}
+
+body[data-theme="dark"] .mantine-Select-option:hover,
+body[data-theme="dark"] .mantine-Menu-item:hover {
+  background-color: #334155 !important;
+}
+
+/* Modal no modo escuro */
+body[data-theme="dark"] .mantine-Modal-content,
+body[data-theme="dark"] .mantine-Modal-header {
+  background-color: #1e293b !important;
+}
+
+body[data-theme="dark"] .mantine-Modal-title {
+  color: #f1f5f9 !important;
+}
+
+/* Alerts no modo escuro */
+body[data-theme="dark"] .mantine-Alert-root {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Badges - manter cores vibrantes */
+body[data-theme="dark"] .mantine-Badge-root[data-variant="light"] {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Scrollbar modo escuro */
+body[data-theme="dark"]::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+body[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+/* ========== ANIMAÇÕES ========== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -59,7 +158,7 @@ code {
   animation: slideInLeft 0.5s ease-out;
 }
 
-/* Scrollbar personalizada */
+/* ========== SCROLLBAR ========== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -77,13 +176,13 @@ code {
   background: linear-gradient(135deg, #1d4ed8 0%, #075985 100%);
 }
 
-/* Melhorias de foco para acessibilidade */
+/* ========== ACESSIBILIDADE ========== */
 *:focus-visible {
   outline: 2px solid #1e40af;
   outline-offset: 2px;
 }
 
-/* Transições suaves para todos os elementos interativos */
+/* Transições suaves */
 button, a, [role="button"] {
   transition: all 0.2s ease;
 }
@@ -96,4 +195,8 @@ button, a, [role="button"] {
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

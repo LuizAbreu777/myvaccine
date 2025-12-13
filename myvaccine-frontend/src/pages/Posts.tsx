@@ -191,7 +191,7 @@ const Posts: React.FC = () => {
         {/* Header */}
         <Box>
           <Title order={1} mb={4} fw={700}>
-            🏥 Postos de Vacinação
+            Postos de Vacinação
           </Title>
           <Text c="dimmed" size="lg">
             Encontre o posto mais próximo e veja as vacinas disponíveis
