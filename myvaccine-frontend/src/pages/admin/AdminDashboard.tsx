@@ -146,25 +146,25 @@ const AdminDashboard: React.FC = () => {
       action: () => navigate("/admin/vaccination-application"),
     },
     {
-      title: "Estoque por Posto",
-      description: "Gerenciar estoque individual",
+      title: "Postos & Estoque",
+      description: "Gerenciar postos e estoque",
       icon: IconPackage,
       color: "blue",
-      action: () => navigate("/admin/post-stocks"),
+      action: () => navigate("/admin/posts-stocks"),
     },
     {
-      title: "Cadastrar Posto",
-      description: "Novo posto de vacinação",
-      icon: IconBuilding,
+      title: "Gestão de Vacinas",
+      description: "Cadastrar e editar vacinas",
+      icon: IconVaccine,
       color: "orange",
-      action: () => navigate("/admin/posts"),
+      action: () => navigate("/admin/vaccines"),
     },
     {
-      title: "Ver Histórico",
+      title: "Vacinas Aplicadas",
       description: "Consultar aplicações",
       icon: IconEye,
       color: "purple",
-      action: () => navigate("/admin/vaccination-history"),
+      action: () => navigate("/admin/applied-vaccines"),
     },
   ];
 
@@ -367,7 +367,7 @@ const AdminDashboard: React.FC = () => {
                 <Button
                   variant="light"
                   size="xs"
-                  onClick={() => navigate("/admin/vaccination-history")}
+                  onClick={() => navigate("/admin/applied-vaccines")}
                 >
                   Ver todas
                 </Button>
@@ -452,7 +452,7 @@ const AdminDashboard: React.FC = () => {
                 <Button
                   variant="light"
                   fullWidth
-                  onClick={() => navigate("/admin/post-stocks")}
+                  onClick={() => navigate("/admin/posts-stocks")}
                 >
                   Gerenciar Estoque por Posto
                 </Button>
