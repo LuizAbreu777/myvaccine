@@ -13,18 +13,26 @@ import {
   Badge,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconCheck, IconUsers } from '@tabler/icons-react';
+import { IconAlertCircle, IconCheck, IconUsers, IconUser } from '@tabler/icons-react';
 import { vaccinationHistoryService, postService, vaccineService, dependentService } from '../../services/services';
 import { Post, Vaccine } from '../../types';
 import { notifications } from '@mantine/notifications';
 import { useDebouncedValue } from '@mantine/hooks';
+
+interface CpfInfo {
+  exists: boolean;
+  type: 'user' | 'dependent' | null;
+  isDependent: boolean;
+  name?: string;
+  relationship?: string;
+}
 
 const VaccinationApplication: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [vaccines, setVaccines] = useState<Vaccine[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [dependentInfo, setDependentInfo] = useState<{ isDependent: boolean; name?: string; relationship?: string } | null>(null);
+  const [cpfInfo, setCpfInfo] = useState<CpfInfo | null>(null);
   const [checkingCpf, setCheckingCpf] = useState(false);
 
   const form = useForm({
@@ -52,24 +60,24 @@ const VaccinationApplication: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const checkDependent = async () => {
+    const checkCpfExists = async () => {
       const cleanCpf = debouncedCpf.replace(/\D/g, '');
       if (cleanCpf.length === 11) {
         setCheckingCpf(true);
         try {
           const info = await dependentService.checkCpf(debouncedCpf);
-          setDependentInfo(info);
+          setCpfInfo(info);
         } catch (error) {
-          setDependentInfo({ isDependent: false });
+          setCpfInfo({ exists: false, type: null, isDependent: false });
         } finally {
           setCheckingCpf(false);
         }
       } else {
-        setDependentInfo(null);
+        setCpfInfo(null);
       }
     };
 
-    checkDependent();
+    checkCpfExists();
   }, [debouncedCpf]);
 
   const loadData = async () => {
@@ -160,27 +168,49 @@ const VaccinationApplication: React.FC = () => {
                   Verificando...
                 </Text>
               )}
-              {dependentInfo && !checkingCpf && (
-                <Group gap="xs" mt={8}>
-                  {dependentInfo.isDependent ? (
-                    <>
-                      <Badge
-                        leftSection={<IconUsers size={12} />}
-                        color="orange"
-                        variant="light"
-                      >
-                        Dependente
-                      </Badge>
-                      <Text size="sm" c="dimmed">
-                        {dependentInfo.name} ({dependentInfo.relationship})
-                      </Text>
-                    </>
+              {cpfInfo && !checkingCpf && (
+                <>
+                  {!cpfInfo.exists ? (
+                    <Alert 
+                      icon={<IconAlertCircle size={16} />} 
+                      color="red" 
+                      variant="light"
+                      mt={8}
+                    >
+                      CPF não encontrado no sistema. Verifique se o CPF está correto ou cadastre o paciente primeiro.
+                    </Alert>
                   ) : (
-                    <Badge color="green" variant="light">
-                      Usuário
-                    </Badge>
+                    <Group gap="xs" mt={8}>
+                      {cpfInfo.type === 'dependent' ? (
+                        <>
+                          <Badge
+                            leftSection={<IconUsers size={12} />}
+                            color="orange"
+                            variant="light"
+                          >
+                            Dependente
+                          </Badge>
+                          <Text size="sm" c="dimmed">
+                            {cpfInfo.name} ({cpfInfo.relationship})
+                          </Text>
+                        </>
+                      ) : (
+                        <>
+                          <Badge 
+                            leftSection={<IconUser size={12} />}
+                            color="green" 
+                            variant="light"
+                          >
+                            Usuário
+                          </Badge>
+                          <Text size="sm" c="dimmed">
+                            {cpfInfo.name}
+                          </Text>
+                        </>
+                      )}
+                    </Group>
                   )}
-                </Group>
+                </>
               )}
             </div>
 

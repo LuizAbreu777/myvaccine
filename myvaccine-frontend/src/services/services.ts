@@ -227,16 +227,22 @@ export const dependentService = {
     return response.data;
   },
 
-  async checkCpf(cpf: string): Promise<{ isDependent: boolean; name?: string; relationship?: string }> {
+  async checkCpf(cpf: string): Promise<{ 
+    exists: boolean; 
+    type: 'user' | 'dependent' | null;
+    isDependent: boolean; 
+    name?: string; 
+    relationship?: string 
+  }> {
     const cleanCpf = cpf.replace(/\D/g, '');
     if (cleanCpf.length !== 11) {
-      return { isDependent: false };
+      return { exists: false, type: null, isDependent: false };
     }
     try {
       const response = await api.get(`/dependents/check/${cleanCpf}`);
       return response.data;
     } catch (error) {
-      return { isDependent: false };
+      return { exists: false, type: null, isDependent: false };
     }
   },
 
