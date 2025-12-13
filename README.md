@@ -1,153 +1,90 @@
-## MyVaccine
+# 💉 MyVaccine
 
-Sistema de gestão de vacinação com backend em NestJS e frontend em React.
+Sistema de gestão de vacinação | **NestJS + React + SQLite**
 
-### Tecnologias
+## ⚡ Instalação Rápida
 
-- **Backend (myvaccine-api)**: NestJS 11, TypeORM, SQLite, Passport/JWT, Class-Validator, Class-Transformer, RxJS, bcryptjs
-- **Frontend (myvaccine-frontend)**: React 19, React Router 7, Mantine UI 8, Axios, TypeScript, CRA (react-scripts)
+**Requisito:** Node.js 18+
 
-### Estrutura do projeto
+```bash
+# Backend (Terminal 1)
+cd myvaccine-api
+cp env.example .env
+npm install
+npm run start:dev
 
-- `myvaccine-api`: API REST em NestJS
-- `myvaccine-frontend`: SPA em React
+# Seed - popular banco (Terminal 2)
+cd myvaccine-api
+npm run seed
 
-### Pré-requisitos
+# Frontend (Terminal 3)
+cd myvaccine-frontend
+cp env.example .env
+npm install
+npm start
+```
 
-- Node.js 18+ e npm
+**Acessar:** http://localhost:3005
 
 ---
 
-## Backend — myvaccine-api
+## 🔐 Credenciais de Teste
 
-### Variáveis de ambiente
+| Tipo | Email | Senha |
+|------|-------|-------|
+| **Admin** | admin@myvaccine.com | admin123 |
+| **Usuário** | luiz.fernando@myvaccine.com | luiz123 |
 
-Copie `myvaccine-api/env.example` para `myvaccine-api/.env` e ajuste se necessário:
+---
+
+## 📁 Estrutura
 
 ```
-JWT_SECRET=myvaccine-super-secret-key-2025
-DATABASE_PATH=database.sqlite
-PORT=3001
-NODE_ENV=development
+myvaccine/
+├── myvaccine-api/       # Backend (NestJS, TypeORM, JWT)
+│   └── src/
+│       ├── auth/        # Autenticação
+│       ├── users/       # Usuários e dependentes
+│       ├── vaccines/    # Vacinas
+│       ├── posts/       # Postos de vacinação
+│       ├── stocks/      # Estoque
+│       └── vaccination-history/
+│
+└── myvaccine-frontend/  # Frontend (React, Mantine UI)
+    └── src/
+        ├── pages/       # Páginas da aplicação
+        ├── components/  # Componentes reutilizáveis
+        └── services/    # Chamadas à API
 ```
 
-Valores padrão (se não definidos):
-- `JWT_SECRET`: myvaccine-super-secret-key-2025
-- `DATABASE_PATH`: database.sqlite (arquivo criado na raiz de `myvaccine-api`)
-- `PORT`: 3001
+---
 
-### Instalação
+## 🔧 Scripts
+
+### Backend (`myvaccine-api`)
+| Comando | Descrição |
+|---------|-----------|
+| `npm run start:dev` | Desenvolvimento |
+| `npm run seed` | Popular banco |
+| `npm run build` | Build produção |
+
+### Frontend (`myvaccine-frontend`)
+| Comando | Descrição |
+|---------|-----------|
+| `npm start` | Desenvolvimento |
+| `npm run build` | Build produção |
+
+---
+
+## 🔄 Resetar Banco
 
 ```bash
 cd myvaccine-api
-npm install
+rm database.sqlite && npm run seed
 ```
-
-### Scripts principais
-
-```bash
-# desenvolvimento com watch
-npm run start:dev
-
-# build de produção
-npm run build
-
-# start em produção (usa dist/)
-npm run start:prod
-
-# executar seed do banco (usuários, vacinas, postos, estoque, histórico)
-npm run seed
-```
-
-O seed cria usuários e dados iniciais. Credenciais de teste geradas:
-- Admin: `admin@myvaccine.com` / `admin123`
-- Usuário: `user@myvaccine.com` / `user123`
-
-### Endpoints e porta
-
-- A API sobe por padrão em `http://localhost:3001`.
-- JWT está habilitado (veja `login` na API e use o token nos endpoints protegidos).
 
 ---
 
-## Frontend — myvaccine-frontend
+## 📄 Licença
 
-### Variáveis de ambiente
-
-Copie `myvaccine-frontend/env.example` para `myvaccine-frontend/.env` e ajuste a URL da API se necessário:
-
-```
-PORT=3005
-REACT_APP_API_URL=http://localhost:3001
-```
-
-### Instalação
-
-```bash
-cd myvaccine-frontend
-npm install
-```
-
-### Scripts principais
-
-```bash
-# desenvolvimento (CRA)
-npm start
-
-# build de produção
-npm run build
-
-# testes (CRA)
-npm test
-```
-
-O app roda por padrão em `http://localhost:3005` e consome a API de `REACT_APP_API_URL`.
-
----
-
-## Como executar o projeto completo (dev)
-
-1. Backend
-   ```bash
-   cd myvaccine-api
-   cp env.example .env
-   npm install
-   npm run start:dev
-   ```
-
-2. Seed do banco (opcional mas recomendado na primeira execução)
-   ```bash
-   # Em outro terminal, ainda em myvaccine-api
-   npm run seed
-   ```
-
-3. Frontend
-   ```bash
-   cd myvaccine-frontend
-   cp env.example .env
-   npm install
-   npm start
-   ```
-
-4. Acesse o frontend em `http://localhost:3005` e autentique com as credenciais de teste.
-
----
-
-## Comandos úteis
-
-### Backend
-- **Lint**: `npm run lint`
-- **Testes**: `npm test`, `npm run test:watch`, `npm run test:cov`
-
-### Frontend
-- **Build**: `npm run build`
-- **Tests**: `npm test`
-
----
-
-## Notas
-
-- Banco SQLite é um arquivo local definido por `DATABASE_PATH`. Para resetar, pare a API e remova o arquivo (ex.: `rm myvaccine-api/database.sqlite`), depois rode `npm run seed` novamente.
-- Se alterar a porta da API, atualize `REACT_APP_API_URL` no frontend.
-
-
+Projeto privado e de uso restrito.
