@@ -28,17 +28,17 @@ export class DependentsSeedService {
 
     console.log(`✅ Usuário Luiz Fernando encontrado: ${luizFernando.cpf}`);
 
-    // Criar dependentes
+    // Criar dependentes com CPFs únicos (não podem coincidir com usuários)
     const dependents = [
       {
-        cpf: '123.456.789-01',
+        cpf: '22233344455', // CPF único para dependente
         name: 'Pedro Luiz Fernando',
         dob: '2015-06-15',
         relationship: 'Filho',
         user_cpf: luizFernando.cpf,
       },
       {
-        cpf: '987.654.321-00',
+        cpf: '33344455566', // CPF único para dependente
         name: 'José Fernando Silva',
         dob: '1955-11-20',
         relationship: 'Pai',

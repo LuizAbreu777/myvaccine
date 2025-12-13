@@ -33,13 +33,21 @@ export class VaccinationHistory {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, user => user.vaccinationHistory, { nullable: true })
+  // Relação com User - sem criar FK física para evitar conflito
+  // Usamos createForeignKeyConstraints: false para não criar FK no banco
+  @ManyToOne(() => User, user => user.vaccinationHistory, { 
+    nullable: true,
+    createForeignKeyConstraints: false 
+  })
   @JoinColumn({ name: 'user_cpf' })
   user: User;
 
   // Relação com Dependent usando a mesma coluna user_cpf
-  // O TypeORM permite isso, mas precisamos usar QueryBuilder para joins condicionais
-  @ManyToOne(() => Dependent, { nullable: true })
+  // Sem FK física - o relacionamento é lógico baseado em is_dependent
+  @ManyToOne(() => Dependent, { 
+    nullable: true,
+    createForeignKeyConstraints: false 
+  })
   @JoinColumn({ name: 'user_cpf', referencedColumnName: 'cpf' })
   dependent: Dependent;
 

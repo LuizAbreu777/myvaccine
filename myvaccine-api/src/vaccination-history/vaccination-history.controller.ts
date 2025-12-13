@@ -48,21 +48,22 @@ export class VaccinationHistoryController {
     }
 
     // Detectar automaticamente se é User ou Dependent
+    // IMPORTANTE: Verificar PRIMEIRO se é dependente, pois dependentes são mais específicos
     let isDependent = false;
     let finalCpf = normalizedCpf;
 
-    // Primeiro tenta encontrar como User
-    try {
-      await this.usersService.findByCpf(normalizedCpf);
-      isDependent = false;
-    } catch (error) {
-      // Se não encontrou como User, tenta como Dependent
-      const dependent = await this.dependentsService.findByCpf(normalizedCpf);
-      if (dependent) {
-        isDependent = true;
-        // Usa o CPF normalizado (sem formatação) para garantir consistência
-        finalCpf = normalizeCPF(dependent.cpf);
-      } else {
+    // Primeiro tenta encontrar como Dependent
+    const dependent = await this.dependentsService.findByCpf(normalizedCpf);
+    if (dependent) {
+      isDependent = true;
+      // Usa o CPF normalizado (sem formatação) para garantir consistência
+      finalCpf = normalizeCPF(dependent.cpf);
+    } else {
+      // Se não encontrou como Dependent, tenta como User
+      try {
+        await this.usersService.findByCpf(normalizedCpf);
+        isDependent = false;
+      } catch (error) {
         throw new NotFoundException(
           "Usuário ou dependente não encontrado com este CPF"
         );

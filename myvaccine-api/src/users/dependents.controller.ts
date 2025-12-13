@@ -15,12 +15,16 @@ import { Roles } from "../common/decorators/roles.decorator";
 import { RolesGuard } from "../common/guards/roles.guard";
 import { UserRole } from "./user.entity";
 import { DependentsService } from "./dependents.service";
+import { UsersService } from "./users.service";
 import { CreateDependentDto, UpdateDependentDto } from "./dto/dependent.dto";
 
 @Controller("dependents")
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class DependentsController {
-  constructor(private readonly dependentsService: DependentsService) {}
+  constructor(
+    private readonly dependentsService: DependentsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
   async create(@Body() createDependentDto: CreateDependentDto, @Request() req) {
@@ -42,15 +46,39 @@ export class DependentsController {
 
   @Get("check/:cpf")
   async checkCpf(@Param("cpf") cpf: string) {
+    // Primeiro verifica se é dependente
     const dependent = await this.dependentsService.findByCpf(cpf);
     if (dependent) {
       return {
+        exists: true,
+        type: 'dependent',
         isDependent: true,
         name: dependent.name,
         relationship: dependent.relationship,
       };
     }
-    return { isDependent: false };
+
+    // Se não for dependente, verifica se é usuário
+    try {
+      const user = await this.usersService.findByCpf(cpf);
+      if (user) {
+        return {
+          exists: true,
+          type: 'user',
+          isDependent: false,
+          name: user.name,
+        };
+      }
+    } catch (error) {
+      // Usuário não encontrado
+    }
+
+    // CPF não existe no banco
+    return { 
+      exists: false, 
+      type: null,
+      isDependent: false 
+    };
   }
 
   @Get(":cpf")
