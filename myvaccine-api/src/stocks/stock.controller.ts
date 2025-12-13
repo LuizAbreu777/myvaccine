@@ -19,7 +19,7 @@ export class StockController {
   }
 
   @Get()
-  @Roles(UserRole.ADMIN)
+  // Sem restrição de role - usuários podem ver estoques disponíveis
   async findAll() {
     return await this.stockService.findAll();
   }
