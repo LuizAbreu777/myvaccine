@@ -126,6 +126,24 @@ export class SeedService {
         max_age: null,
         contraindications: 'Gravidez, imunossupressão',
       },
+      {
+        name: 'Vacina BCG',
+        min_age: 0,
+        max_age: null,
+        contraindications: 'Imunossupressão grave',
+      },
+      {
+        name: 'Vacina contra Febre Amarela',
+        min_age: 9,
+        max_age: null,
+        contraindications: 'Alergia ao ovo, gravidez',
+      },
+      {
+        name: 'Vacina contra Tétano',
+        min_age: 0,
+        max_age: null,
+        contraindications: 'Reação alérgica grave anterior',
+      },
     ];
 
     for (const vaccineData of vaccines) {
@@ -137,7 +155,7 @@ export class SeedService {
       }
     }
 
-    // Criar postos
+    // Criar postos (coordenadas aproximadas de Abreu e Lima - PE)
     const posts = [
       {
         name: 'Posto de Saúde Centro I',
@@ -145,6 +163,8 @@ export class SeedService {
         city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
+        latitude: -7.9050,
+        longitude: -34.9000,
       },
       {
         name: 'Posto de Saúde Centro II',
@@ -152,13 +172,53 @@ export class SeedService {
         city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
+        latitude: -7.9080,
+        longitude: -34.8980,
       },
       {
-        name: 'PSF Alto São Miguel ',
+        name: 'PSF Alto São Miguel',
         address: '69, R. Murici, 1 - Alto São Miguel',
         city: 'Abreu e Lima',
         state: 'PE',
         status: PostStatus.ACTIVE,
+        latitude: -7.9120,
+        longitude: -34.9050,
+      },
+      {
+        name: 'USF Centro II',
+        address: 'Rua Capitão José Primo, 294 - Centro',
+        city: 'Abreu e Lima',
+        state: 'PE',
+        status: PostStatus.ACTIVE,
+        latitude: -7.9111,
+        longitude: -34.9022,
+      },
+      {
+        name: 'USF Fosfato I',
+        address: 'Rua Rio Paraná, s/n - Fosfato',
+        city: 'Abreu e Lima',
+        state: 'PE',
+        status: PostStatus.ACTIVE,
+        latitude: -7.9175,
+        longitude: -34.8983,
+      },
+      {
+        name: 'PS Willibaldo de Franca Seixas',
+        address: 'Avenida A, s/n - Caetés II',
+        city: 'Abreu e Lima',
+        state: 'PE',
+        status: PostStatus.ACTIVE,
+        latitude: -7.9250,
+        longitude: -34.9150,
+      },
+      {
+        name: 'ESF Beira Mar',
+        address: 'Av. Beira Mar, 400 - Praia',
+        city: 'Abreu e Lima',
+        state: 'PE',
+        status: PostStatus.ACTIVE,
+        latitude: -7.8980,
+        longitude: -34.8900,
       },
     ];
 

@@ -31,6 +31,12 @@ export class Post {
   })
   status: PostStatus;
 
+  @Column({ type: 'float', nullable: true })
+  latitude: number;
+
+  @Column({ type: 'float', nullable: true })
+  longitude: number;
+
   @CreateDateColumn()
   created_at: Date;
 

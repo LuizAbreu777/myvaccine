@@ -25,6 +25,8 @@ export interface Post {
   city: string;
   state: string;
   status: 'ativo' | 'inativo';
+  latitude?: number;
+  longitude?: number;
   created_at: string;
   updated_at: string;
   stocks?: Stock[];
