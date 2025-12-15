@@ -41,9 +41,9 @@ const theme = createTheme({
       '#0c4a6e'
     ],
   },
-  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+  fontFamily: 'Outfit, sans-serif',
   headings: {
-    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+    fontFamily: 'Outfit, sans-serif',
     fontWeight: '600',
   },
   radius: {
