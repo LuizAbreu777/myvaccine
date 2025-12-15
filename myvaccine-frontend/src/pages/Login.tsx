@@ -59,14 +59,21 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" mb="xl">
-        MyVaccine
-      </Title>
-
+    <div className="login-bg">
+     <div className="login-overlay">
+     <Container size={520} my={80}>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <Title order={2} ta="center" mb="md">
-          Entrar
+        <img
+        src="/Name-Myvaccine.png"
+        alt="MyVaccine"
+        style={{
+        display: "block",
+        margin: "0 auto 24px",
+        maxWidth: "160px",
+     }}
+        />
+        <Title order={1} ta="center" mb="md"style={{ color: "#100E3D" }}>
+         Entrar
         </Title>
 
         {error && (
@@ -82,6 +89,7 @@ const Login: React.FC = () => {
               placeholder="seu@email.com"
               required
               {...form.getInputProps("email")}
+              style={{ color: "#666666"}}
             />
 
             <PasswordInput
@@ -89,15 +97,15 @@ const Login: React.FC = () => {
               placeholder="Sua senha"
               required
               {...form.getInputProps("password")}
+              style={{ color: "#666666"}}
             />
-
-            <Button type="submit" fullWidth mt="xl" loading={loading}>
-              Entrar
+            <Button type="submit" fullWidth mt="xl" loading={loading} styles={{root: {backgroundColor: "#100E3D",},}}>
+            <span style={{ color: "#FFFFFF", fontSize: "15px" }}>Entrar</span>
             </Button>
           </Stack>
         </form>
 
-        <Text ta="center" mt="md">
+        <Text ta="center" mt="md" style={{ color: "#100E3D"}}>
           Não tem uma conta?{" "}
           <Anchor component={Link} to="/register">
             Registre-se
@@ -105,6 +113,8 @@ const Login: React.FC = () => {
         </Text>
       </Paper>
     </Container>
+   </div>
+  </div>
   );
 };
 
