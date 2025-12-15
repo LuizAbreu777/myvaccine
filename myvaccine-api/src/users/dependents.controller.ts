@@ -17,6 +17,7 @@ import { UserRole } from "./user.entity";
 import { DependentsService } from "./dependents.service";
 import { UsersService } from "./users.service";
 import { CreateDependentDto, UpdateDependentDto } from "./dto/dependent.dto";
+import { use } from "passport";
 
 @Controller("dependents")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -45,6 +46,7 @@ export class DependentsController {
   }
 
   @Get("check/:cpf")
+  
   async checkCpf(@Param("cpf") cpf: string) {
     // Primeiro verifica se é dependente
     const dependent = await this.dependentsService.findByCpf(cpf);
