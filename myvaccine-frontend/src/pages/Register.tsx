@@ -68,13 +68,20 @@ const Register: React.FC = () => {
   };
 
   return (
+    <div className="login-bg">
+     <div className="login-overlay">
     <Container size={800} my={40}>
-      <Title ta="center" mb="xl">
-        MyVaccine
-      </Title>
-      
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <Title order={2} ta="center" mb="md">
+        <img
+        src="/Name-Myvaccine.png"
+        alt="MyVaccine"
+        style={{
+        display: "block",
+        margin: "0 auto 24px",
+        maxWidth: "160px",
+     }}
+        />
+        <Title order={1} ta="center" mb="md" style={{ color: "#100E3D" }}>
           Criar Conta
         </Title>
 
@@ -93,6 +100,7 @@ const Register: React.FC = () => {
                   placeholder="000.000.000-00"
                   required
                   {...form.getInputProps('cpf')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -101,6 +109,7 @@ const Register: React.FC = () => {
                   placeholder="Seu nome completo"
                   required
                   {...form.getInputProps('name')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
             </Grid>
@@ -112,6 +121,7 @@ const Register: React.FC = () => {
                   placeholder="seu@email.com"
                   required
                   {...form.getInputProps('email')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -120,6 +130,7 @@ const Register: React.FC = () => {
                   placeholder="(00) 00000-0000"
                   required
                   {...form.getInputProps('telephone')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
             </Grid>
@@ -131,6 +142,7 @@ const Register: React.FC = () => {
                   placeholder="Sua senha"
                   required
                   {...form.getInputProps('password')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -139,6 +151,7 @@ const Register: React.FC = () => {
                   placeholder="Confirme sua senha"
                   required
                   {...form.getInputProps('confirmPassword')}
+                  style={{ color: "#666666"}}
                 />
               </Grid.Col>
             </Grid>
@@ -148,6 +161,7 @@ const Register: React.FC = () => {
               type="date"
               required
               {...form.getInputProps('dob')}
+              style={{ color: "#666666"}}
             />
 
             <TextInput
@@ -155,15 +169,16 @@ const Register: React.FC = () => {
               placeholder="Seu endereço completo"
               required
               {...form.getInputProps('address')}
+              style={{ color: "#666666"}}
             />
 
-            <Button type="submit" fullWidth mt="xl" loading={loading}>
-              Criar Conta
+            <Button type="submit" fullWidth mt="xl" loading={loading} styles={{root: {backgroundColor: "#100E3D",},}}>
+            <span style={{ color: "#FFFFFF", fontSize: "15px"}}>Criar Conta</span>
             </Button>
           </Stack>
         </form>
 
-        <Text ta="center" mt="md">
+        <Text ta="center" mt="md" style={{ color: "#100E3D"}}>
           Já tem uma conta?{' '}
           <Anchor component={Link} to="/login">
             Faça login
@@ -171,6 +186,8 @@ const Register: React.FC = () => {
         </Text>
       </Paper>
     </Container>
+    </div>
+    </div>
   );
 };
 
