@@ -34,6 +34,7 @@ npm start
 |------|-------|-------|
 | **Admin** | admin@myvaccine.com | admin123 |
 | **Usuário** | luiz.fernando@myvaccine.com | luiz123 |
+| **Usuário** | hatus.luiz@myvaccine.com | hatus123 |
 
 ---
 
