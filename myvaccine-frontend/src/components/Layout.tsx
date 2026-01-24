@@ -31,6 +31,8 @@ import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useTheme } from "../hooks/useTheme";
+import { useDisclosure } from "@mantine/hooks";
+import { IconMenu2 } from "@tabler/icons-react";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -125,6 +127,8 @@ const Layout: React.FC = () => {
   const location = useLocation();
   const { colorScheme, toggleColorScheme } = useTheme();
   const isDark = colorScheme === 'dark';
+  const [opened, { toggle }] = useDisclosure(true);
+
   
   // Cores do tema
   const themeColors = isDark ? {
@@ -184,6 +188,7 @@ const Layout: React.FC = () => {
   ];
 
   const adminNavItems = [
+    { label: "Visão Geral", icon: IconHome, href: "/" },
     { label: "Dashboard", icon: IconShield, href: "/admin" },
     { label: "Gestão de Vacinas", icon: IconVaccine, href: "/admin/vaccines" },
     { label: "Postos & Estoque", icon: IconBuilding, href: "/admin/posts-stocks" },
@@ -195,7 +200,11 @@ const Layout: React.FC = () => {
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 280, breakpoint: "sm" }}
+      navbar={{
+      width: 280,
+      breakpoint: "sm",
+      collapsed: { mobile: !opened, desktop: !opened }
+      }}
       padding="md"
       styles={{
         main: {
@@ -210,8 +219,12 @@ const Layout: React.FC = () => {
           boxShadow: isDark ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.05)',
         }}
       >
+
         <Group h="100%" px="md" justify="space-between">
           <Group>
+            <ActionIcon variant="subtle" size="lg" onClick={toggle}>
+             <IconMenu2 size={26} color={isDark ? '#003AF1' : '#05164F'} />
+            </ActionIcon>
             <img
               src="/Name-Myvaccine.png"
               alt="MyVaccine"
@@ -325,46 +338,47 @@ const Layout: React.FC = () => {
         }}
       >
         <Stack gap="xs" style={{ flex: 1 }}>
-          {/* Menu Principal */}
-          <Text size="xs" fw={600} tt="uppercase" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
-            Menu Principal
-          </Text>
+  {user?.role === "admin" ? (
+    <>
+      <Text size="xs" fw={600} tt="uppercase" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
+        Administração
+      </Text>
 
-          <Stack gap={6}>
-            {navItems.map((item) => (
-              <NavItem
-                key={item.href}
-                icon={item.icon}
-                label={item.label}
-                href={item.href}
-                active={location.pathname === item.href}
-                isDark={isDark}
-              />
-            ))}
-          </Stack>
+      <Stack gap={6}>
+        {adminNavItems.map((item) => (
+          <NavItem
+            key={item.href}
+            icon={item.icon}
+            label={item.label}
+            href={item.href}
+            active={location.pathname === item.href}
+            isDark={isDark}
+          />
+        ))}
+      </Stack>
+    </>
+  ) : (
+    <>
+      <Text size="xs" fw={600} tt="uppercase" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
+        Menu Principal
+      </Text>
 
-          {/* Menu Admin */}
-          {user?.role === "admin" && (
-            <>
-              <Text size="xs" fw={600} tt="uppercase" mt="xl" mb={4} ml={4} style={{ color: themeColors.textMuted }}>
-                Administração
-              </Text>
+      <Stack gap={6}>
+        {navItems.map((item) => (
+          <NavItem
+            key={item.href}
+            icon={item.icon}
+            label={item.label}
+            href={item.href}
+            active={location.pathname === item.href}
+            isDark={isDark}
+          />
+        ))}
+      </Stack>
+    </>
+  )}
+</Stack>
 
-              <Stack gap={6}>
-                {adminNavItems.map((item) => (
-                  <NavItem
-                    key={item.href}
-                    icon={item.icon}
-                    label={item.label}
-                    href={item.href}
-                    active={location.pathname === item.href}
-                    isDark={isDark}
-                  />
-                ))}
-              </Stack>
-            </>
-          )}
-        </Stack>
 
         {/* Card do Usuário no rodapé */}
         <Box
