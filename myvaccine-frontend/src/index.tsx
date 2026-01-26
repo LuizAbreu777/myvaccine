@@ -38,7 +38,7 @@ const theme = createTheme({
       '#0284c7',
       '#0369a1',
       '#075985',
-      '#0c4a6e'
+      '#0c4a6e',
     ],
   },
   fontFamily: 'Outfit, sans-serif',

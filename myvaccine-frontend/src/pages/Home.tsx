@@ -153,12 +153,25 @@ const UserHome: React.FC = () => {
     <Container size="xl" py="xl">
       <Stack gap="xl">
         <Box>
-          <Title order={1} mb={4} fw={700}>
-            Olá, {user?.name?.split(' ')[0]} 👋
-          </Title>
-          <Text c="dimmed" size="lg">
-            Acompanhe a vacinação da sua família
-          </Text>
+        <Group align="center" gap="md">
+         <Box>
+           <Title order={1} fw={800} style={{ fontSize: '2.7rem', lineHeight: 1.1,}}>
+            Olá, {user?.name?.split(' ')[0]}!
+           </Title>
+         </Box>
+
+         <img
+          src="/Mascote.png"
+          alt="Mascote MyVaccine"
+          style={{
+           height: 80,
+           marginLeft: 8,
+          }}
+         />
+        </Group>
+        <Title order={1} c="dimmed" size="lg">
+           Acompanhe a vacinação da sua família
+        </Title>
         </Box>
 
         {/* Layout Principal: Carteirinha à esquerda, demais à direita */}

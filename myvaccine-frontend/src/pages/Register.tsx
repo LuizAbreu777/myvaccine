@@ -68,8 +68,8 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="login-bg">
-     <div className="login-overlay">
+    <div className="register-bg">
+     <div className="register-overlay">
     <Container size={800} my={40}>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <img

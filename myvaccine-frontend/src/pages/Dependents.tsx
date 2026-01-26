@@ -13,6 +13,8 @@ import {
   Select,
   ActionIcon,
   LoadingOverlay,
+  Avatar,
+  SimpleGrid,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
@@ -25,6 +27,8 @@ import {
   IconPlus,
   IconEdit,
   IconTrash,
+  IconLayoutList,
+  IconLayoutGrid,
 } from "@tabler/icons-react";
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../hooks/useAuth";
@@ -47,6 +51,8 @@ const DependentsPage: React.FC = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [loadingList, setLoadingList] = useState(true);
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
+
 
   // Função para normalizar CPF (remover pontos e traços)
   const normalizeCPF = (cpf: string) => {
@@ -256,98 +262,181 @@ const DependentsPage: React.FC = () => {
         </Group>
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <LoadingOverlay visible={loadingList} />
-          <Stack gap="md">
-            <Group justify="space-between">
-              <Text fw={500} size="lg">
-                Total de Dependentes: {dependents.length}
-              </Text>
-            </Group>
+  <LoadingOverlay visible={loadingList} />
 
-            {dependents.length === 0 ? (
-              <Text ta="center" c="dimmed" py="xl">
-                Nenhum dependente registrado. Clique em "Adicionar Dependente"
-                para começar.
+  <Stack gap="md">
+    {/* Cabeçalho com total e toggle */}
+    <Group justify="space-between" align="center">
+      <Text fw={500} size="lg">
+        Total de Dependentes: {dependents.length}
+      </Text>
+
+      <Group>
+        <ActionIcon
+          variant={viewMode === "table" ? "filled" : "light"}
+          onClick={() => setViewMode("table")}
+        >
+          <IconLayoutList size={18} />
+        </ActionIcon>
+
+        <ActionIcon
+          variant={viewMode === "cards" ? "filled" : "light"}
+          onClick={() => setViewMode("cards")}
+        >
+          <IconLayoutGrid size={18} />
+        </ActionIcon>
+      </Group>
+    </Group>
+
+    {/* Conteúdo: Tabela ou Cards */}
+    {dependents.length === 0 ? (
+      <Text ta="center" c="dimmed" py="xl">
+        Nenhum dependente registrado. Clique em "Adicionar Dependente"
+        para começar.
+      </Text>
+    ) : viewMode === "table" ? (
+      <Table>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Nome</Table.Th>
+            <Table.Th>CPF</Table.Th>
+            <Table.Th>Data de Nascimento</Table.Th>
+            <Table.Th>Idade</Table.Th>
+            <Table.Th>Grau de Parentesco</Table.Th>
+            <Table.Th>Data de Registro</Table.Th>
+            <Table.Th>Ações</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {dependents.map((dependent) => (
+            <Table.Tr key={dependent.cpf}>
+              <Table.Td>
+                <Group gap="xs">
+                  <IconUser size={16} />
+                  <Text fw={500}>{dependent.name}</Text>
+                </Group>
+              </Table.Td>
+
+              <Table.Td>
+                <Group gap="xs">
+                  <IconId size={16} />
+                  <Text>{formatCPF(dependent.cpf)}</Text>
+                </Group>
+              </Table.Td>
+
+              <Table.Td>
+                <Group gap="xs">
+                  <IconCalendar size={16} />
+                  <Text>
+                    {new Date(dependent.dob).toLocaleDateString("pt-BR")}
+                  </Text>
+                </Group>
+              </Table.Td>
+
+              <Table.Td>
+                <Badge variant="light" color="blue">
+                  {calculateAge(dependent.dob)} anos
+                </Badge>
+              </Table.Td>
+
+              <Table.Td>
+                <Group gap="xs">
+                  <IconHeart size={16} />
+                  <Text>{dependent.relationship}</Text>
+                </Group>
+              </Table.Td>
+
+              <Table.Td>
+                <Text size="sm" c="dimmed">
+                  {new Date(dependent.created_at).toLocaleDateString("pt-BR")}
+                </Text>
+              </Table.Td>
+
+              <Table.Td>
+                <Group gap="xs">
+                  <ActionIcon
+                    variant="subtle"
+                    color="blue"
+                    onClick={() => handleOpenModal(dependent)}
+                  >
+                    <IconEdit size={18} />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant="subtle"
+                    color="red"
+                    onClick={() => handleDelete(dependent.cpf)}
+                  >
+                    <IconTrash size={18} />
+                  </ActionIcon>
+                </Group>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+    ) : (
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+        {dependents.map((dependent) => (
+          <Card key={dependent.cpf} shadow="sm" radius="md" withBorder>
+            <Stack gap="sm">
+             <Group align="flex-start">
+              <Avatar size={64} radius="xl" color="blue">
+                <IconUser size={32} />
+              </Avatar>
+
+             <Stack gap={4}>
+              <Title order={2}>{dependent.name}</Title>
+
+              <Badge variant="light" color="blue" size="sm">
+                {calculateAge(dependent.dob)} anos
+              </Badge>
+            </Stack>
+          </Group>
+
+
+              <Text>
+                <strong>CPF:</strong> {formatCPF(dependent.cpf)}
               </Text>
-            ) : (
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Nome</Table.Th>
-                    <Table.Th>CPF</Table.Th>
-                    <Table.Th>Data de Nascimento</Table.Th>
-                    <Table.Th>Idade</Table.Th>
-                    <Table.Th>Grau de Parentesco</Table.Th>
-                    <Table.Th>Data de Registro</Table.Th>
-                    <Table.Th>Ações</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {dependents.map((dependent) => (
-                    <Table.Tr key={dependent.cpf}>
-                      <Table.Td>
-                        <Group gap="xs">
-                          <IconUser size={16} />
-                          <Text fw={500}>{dependent.name}</Text>
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>
-                        <Group gap="xs">
-                          <IconId size={16} />
-                          <Text>{formatCPF(dependent.cpf)}</Text>
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>
-                        <Group gap="xs">
-                          <IconCalendar size={16} />
-                          <Text>
-                            {new Date(dependent.dob).toLocaleDateString("pt-BR")}
-                          </Text>
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>
-                        <Badge variant="light" color="blue">
-                          {calculateAge(dependent.dob)} anos
-                        </Badge>
-                      </Table.Td>
-                      <Table.Td>
-                        <Group gap="xs">
-                          <IconHeart size={16} />
-                          <Text>{dependent.relationship}</Text>
-                        </Group>
-                      </Table.Td>
-                      <Table.Td>
-                        <Text size="sm" c="dimmed">
-                          {new Date(dependent.created_at).toLocaleDateString(
-                            "pt-BR"
-                          )}
-                        </Text>
-                      </Table.Td>
-                      <Table.Td>
-                        <Group gap="xs">
-                          <ActionIcon
-                            variant="subtle"
-                            color="blue"
-                            onClick={() => handleOpenModal(dependent)}
-                          >
-                            <IconEdit size={18} />
-                          </ActionIcon>
-                          <ActionIcon
-                            variant="subtle"
-                            color="red"
-                            onClick={() => handleDelete(dependent.cpf)}
-                          >
-                            <IconTrash size={18} />
-                          </ActionIcon>
-                        </Group>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            )}
-          </Stack>
-        </Card>
+
+              <Text>
+                <strong>Nascimento:</strong>{" "}
+                {new Date(dependent.dob).toLocaleDateString("pt-BR")}
+              </Text>
+
+              <Text>
+                <strong>Parentesco:</strong> {dependent.relationship}
+              </Text>
+
+              <Group justify="space-between" mt="sm">
+                <Text size="sm" c="dimmed">
+                  Registro:{" "}
+                  {new Date(dependent.created_at).toLocaleDateString("pt-BR")}
+                </Text>
+
+                <Group gap="xs">
+                  <ActionIcon
+                    variant="subtle"
+                    color="blue"
+                    onClick={() => handleOpenModal(dependent)}
+                  >
+                    <IconEdit size={18} />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant="subtle"
+                    color="red"
+                    onClick={() => handleDelete(dependent.cpf)}
+                  >
+                    <IconTrash size={18} />
+                  </ActionIcon>
+                </Group>
+              </Group>
+            </Stack>
+          </Card>
+        ))}
+      </SimpleGrid>
+    )}
+  </Stack>
+</Card>
 
         {/* Modal para criar/editar dependente */}
         <Modal
@@ -412,4 +501,3 @@ const DependentsPage: React.FC = () => {
 };
 
 export default DependentsPage;
-

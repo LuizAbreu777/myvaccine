@@ -79,15 +79,23 @@ const Profile: React.FC = () => {
           <Avatar color="blue" radius="xl" size="lg">
             {user?.name?.charAt(0).toUpperCase() || form.name?.charAt(0).toUpperCase()}
           </Avatar>
-          <div>
-            <Title order={3}>Meu Perfil</Title>
-            {user?.name && (
-              <Text size="lg" fw={600} c="blue" mt={4}>
-                {user.name}
-              </Text>
-            )}
-            <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>CPF {form.cpf}</div>
-          </div>
+        <div>
+           {user?.name && (
+           <Title order={3}>{user.name}</Title>
+           )}
+
+          <Text size="lg" fw={500} c="blue" style={{ fontSize: 15}} >
+          <Text span size="md" fw={700} mr={4} style={{ fontSize: 16, color: '#000000', marginTop: 4 }}>
+          CPF:
+          </Text>
+        {form.cpf}
+      </Text>
+
+        <div style={{ fontSize: 13, color: '#666'}}>
+          Meu Perfil
+        </div>
+    </div>
+
         </Group>
       </Group>
       <Divider mb="md" />

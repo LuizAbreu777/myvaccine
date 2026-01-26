@@ -251,7 +251,7 @@ const Posts: React.FC = () => {
         </SimpleGrid>
 
         {/* Filtros */}
-        <Paper p="md" radius="lg" withBorder>
+        <Paper p="md" radius="lg" style={{ backgroundColor: '#ffffff'}}>
           <Group gap="md" wrap="wrap">
             <TextInput
               placeholder="Buscar posto..."
@@ -367,7 +367,7 @@ const Posts: React.FC = () => {
                   {/* Botões */}
                   <Group gap="xs">
                     <Button
-                      variant="light"
+                      variant="dark"
                       color="blue"
                       size="sm"
                       style={{ flex: 1 }}
