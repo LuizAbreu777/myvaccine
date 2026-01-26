@@ -46,11 +46,12 @@ npm run dev
 | `npm run seed`      | Popular banco           |
 
 ### Frontend (`myvaccine-frontend`)
-
+ 
 | Comando         | Descrição       |
 | --------------- | --------------- |
 | `npm start`     | Desenvolvimento |
 | `npm run build` | Build produção  |
+| `npm test`      | Executar testes |
 
 ---
 
