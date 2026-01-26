@@ -2,43 +2,69 @@
 
 Sistema de gestão de vacinação | **NestJS + React + SQLite**
 
-## ⚡ Instalação Rápida
+---
+
+## ⚡ Instalação Rápida (Modo Monorepo)
 
 **Requisito:** Node.js 18+
 
 ```bash
-# Backend (Terminal 1)
-cd myvaccine-api
-cp env.example .env
+# na raiz do projeto
 npm install
-npm run start:dev
-
-# Seed - popular banco (Terminal 2)
-cd myvaccine-api
-npm run seed
-
-# Frontend (Terminal 3)
-cd myvaccine-frontend
-cp env.example .env
-npm install
-npm start
+npm run install:all
+npm run dev
 ```
 
-**Acessar:** http://localhost:3005
+* API (NestJS) roda em `http://localhost:3000`
+* Frontend (React) roda em `http://localhost:3005`
+
+👉 Um único comando sobe **backend + frontend juntos**.
+
+---
+
+## 🔧 Scripts Principais (Raiz do Projeto)
+
+| Comando               | Descrição                              |
+| --------------------- | -------------------------------------- |
+| `npm run install:all` | Instala dependências da API e do Front |
+| `npm run dev`         | Sobe API (watch) + Front juntos        |
+| `npm run build`       | Build completo (API + Front)           |
+| `npm run test`        | Executa testes da API e do Front       |
+| `npm run seed`        | Popula o banco (API)                   |
+
+---
+
+## 🔧 Scripts por Projeto
+
+### Backend (`myvaccine-api`)
+
+| Comando             | Descrição               |
+| ------------------- | ----------------------- |
+| `npm run start:dev` | Desenvolvimento (watch) |
+| `npm run start`     | Execução normal         |
+| `npm run build`     | Build produção          |
+| `npm run seed`      | Popular banco           |
+
+### Frontend (`myvaccine-frontend`)
+
+| Comando         | Descrição       |
+| --------------- | --------------- |
+| `npm start`     | Desenvolvimento |
+| `npm run build` | Build produção  |
 
 ---
 
 ## 🔐 Credenciais de Teste
 
-| Tipo | Email | Senha |
-|------|-------|-------|
-| **Admin** | admin@myvaccine.com | admin123 |
-| **Usuário** | luiz.fernando@myvaccine.com | luiz123 |
-| **Usuário** | hatus.luiz@myvaccine.com | hatus123 |
+| Tipo        | Email                                                             | Senha    |
+| ----------- | ----------------------------------------------------------------- | -------- |
+| **Admin**   | [admin@myvaccine.com](mailto:admin@myvaccine.com)                 | admin123 |
+| **Usuário** | [luiz.fernando@myvaccine.com](mailto:luiz.fernando@myvaccine.com) | luiz123  |
+| **Usuário** | [hatus.luiz@myvaccine.com](mailto:hatus.luiz@myvaccine.com)       | hatus123 |
 
 ---
 
-## 📁 Estrutura
+## 📁 Estrutura do Projeto
 
 ```
 myvaccine/
@@ -60,24 +86,7 @@ myvaccine/
 
 ---
 
-## 🔧 Scripts
-
-### Backend (`myvaccine-api`)
-| Comando | Descrição |
-|---------|-----------|
-| `npm run start:dev` | Desenvolvimento |
-| `npm run seed` | Popular banco |
-| `npm run build` | Build produção |
-
-### Frontend (`myvaccine-frontend`)
-| Comando | Descrição |
-|---------|-----------|
-| `npm start` | Desenvolvimento |
-| `npm run build` | Build produção |
-
----
-
-## 🔄 Resetar Banco
+## 🔄 Resetar Banco de Dados
 
 ```bash
 cd myvaccine-api
@@ -85,62 +94,42 @@ rm database.sqlite && npm run seed
 ```
 
 ---
-## ❓ FAQ - Desenvolvedor/Admin
+
+## ❓ FAQ - Desenvolvedor / Admin
 
 ### O que é o MyVaccine?
 
-O MyVaccine é um sistema para gerenciar vacinas, permitindo registrar históricos, acompanhar doses futuras e controlar a vacinação de usuários e pacientes.
+Sistema para gerenciar vacinas, históricos de doses, dependentes e controle de vacinação.
 
-### Quais tecnologias são usadas?
+### Posso rodar tudo com um comando?
 
-**Backend:** NestJS, TypeORM, JWT
+Sim. Use:
 
-**Frontend:** React, Mantine UI
-
-**Banco de dados:** SQLite
-
-### Posso usar em produção?
-
-Sim, mas é necessário configurar o ambiente e o banco corretamente. Para testes rápidos, o projeto já inclui seed com dados de exemplo.
-
-### Como resetar o banco de dados?
 ```bash
-cd myvaccine-api
-rm database.sqlite && npm run seed
+npm run dev
 ```
-### Existe usuário de teste?
 
-Sim, as credenciais estão na seção 🔐 Credenciais de Teste.
+### Preciso rodar comandos separados?
+
+Não. O `package.json` da raiz orquestra tudo automaticamente.
 
 ### Preciso de Node.js específico?
 
-Sim, Node.js 18+ é recomendado para rodar o projeto corretamente.
+Sim, **Node.js 18+**.
+
 ---
+
 ## ❓ FAQ - Usuários
 
-### Como me cadastrar no MyVaccine?
+### Como me cadastrar?
 
-Você pode se cadastrar clicando em “Registrar” na tela de login e preenchendo seus dados pessoais.
+Use a opção **Registrar** na tela de login.
 
-### Como registrar minhas vacinas?
+### Posso acompanhar doses futuras?
 
-Após o login, acesse a seção Vacinas, clique em Adicionar Vacina e preencha as informações da dose recebida.
+Sim, o sistema gerencia lembretes e histórico de vacinação.
 
-### Como acompanhar doses futuras?
-
-O sistema envia lembretes automáticos para cada vacina cadastrada, indicando quando a próxima dose deve ser tomada.
-
-### Posso adicionar dependentes?
-
-Sim, na seção Usuários/Dependentes você pode registrar familiares e acompanhar a vacinação deles.
-
-### Posso acessar meu histórico de vacinação?
-
-Sim, o histórico completo de todas as vacinas cadastradas fica disponível na seção Histórico de Vacinação.
-
-### O que faço se esquecer minha senha?
-
-Use a opção “Esqueci minha senha” na tela de login para redefini-la por email.
+---
 
 ## 📄 Licença
 
