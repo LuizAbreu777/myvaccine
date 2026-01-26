@@ -1,0 +1,33 @@
+{
+  "name": "myvaccine",
+  "private": true,
+  "version": "1.0.0",
+  "description": "MyVaccine - API (NestJS) + Frontend (React)",
+  "scripts": {
+    "install:api": "npm install --prefix myvaccine-api",
+    "install:front": "npm install --prefix myvaccine-frontend",
+    "install:all": "npm run install:api && npm run install:front",
+
+    "dev:api": "npm run start:dev --prefix myvaccine-api",
+    "dev:front": "npm run start --prefix myvaccine-frontend",
+    "dev": "concurrently -n API,FRONT -c blue,green \"npm run dev:api\" \"npm run dev:front\"",
+
+
+    "start:api": "npm run start --prefix myvaccine-api",
+    "start:front": "npm run start --prefix myvaccine-frontend",
+    "start": "concurrently \"npm run start:api\" \"npm run start:front\"",
+
+    "build:api": "npm run build --prefix myvaccine-api",
+    "build:front": "npm run build --prefix myvaccine-frontend",
+    "build": "npm run build:api && npm run build:front",
+
+    "test:api": "npm run test --prefix myvaccine-api",
+    "test:front": "npm run test --prefix myvaccine-frontend",
+    "test": "concurrently \"npm run test:api\" \"npm run test:front\"",
+
+    "seed": "npm run seed --prefix myvaccine-api"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
