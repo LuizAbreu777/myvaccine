@@ -226,7 +226,7 @@ const Layout: React.FC = () => {
              <IconMenu2 size={26} color={isDark ? '#003AF1' : '#05164F'} />
             </ActionIcon>
             <img
-              src="/Name-Myvaccine.png"
+              src={isDark ? "/Name-MyvaccineDark.png" : "/Name-Myvaccine.png"}
               alt="MyVaccine"
               style={{ 
                 height: 40,
