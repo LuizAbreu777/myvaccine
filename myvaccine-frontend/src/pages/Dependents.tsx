@@ -379,34 +379,44 @@ const DependentsPage: React.FC = () => {
         {dependents.map((dependent) => (
           <Card key={dependent.cpf} shadow="sm" radius="md" withBorder>
             <Stack gap="sm">
-             <Group align="flex-start">
-              <Avatar size={64} radius="xl" color="blue">
-                <IconUser size={32} />
-              </Avatar>
+              <Group align="flex-start" wrap="nowrap">
+                <Avatar size={64} radius="xl" color="blue">
+                  <IconUser size={32} />
+                </Avatar>
+                <Stack
+                  gap={4}
+                  style={{flex: 1, minWidth: 0,
+                  }}
+                >
+                  <Title
+                    order={2}
+                    style={{whiteSpace: "normal", overflowWrap: "anywhere", wordBreak: "break-word", lineHeight: 1.15,
+                    }}
+                  >
+                    {dependent.name}
+                  </Title>
+                  <Badge variant="light" color="blue" size="sm" w="fit-content">
+                    {calculateAge(dependent.dob)} anos
+                  </Badge>
+                </Stack>
+              </Group>
+              {/* INFORMAÇÕES MAIS PRA BAIXO */}
+              <Stack gap="xs" mt="md">
+                <Text>
+                  <strong>CPF:</strong> {formatCPF(dependent.cpf)}
+                </Text>
 
-             <Stack gap={4}>
-              <Title order={2}>{dependent.name}</Title>
+                <Text>
+                  <strong>Data de Nascimento:</strong>{" "}
+                  {new Date(dependent.dob).toLocaleDateString("pt-BR")}
+                </Text>
 
-              <Badge variant="light" color="blue" size="sm">
-                {calculateAge(dependent.dob)} anos
-              </Badge>
-            </Stack>
-          </Group>
+                <Text>
+                  <strong>Grau de Parentesco:</strong> {dependent.relationship}
+                </Text>
+              </Stack>
 
-
-              <Text>
-                <strong>CPF:</strong> {formatCPF(dependent.cpf)}
-              </Text>
-
-              <Text>
-                <strong>Nascimento:</strong>{" "}
-                {new Date(dependent.dob).toLocaleDateString("pt-BR")}
-              </Text>
-
-              <Text>
-                <strong>Parentesco:</strong> {dependent.relationship}
-              </Text>
-
+              {/* RODAPÉ */}
               <Group justify="space-between" mt="sm">
                 <Text size="sm" c="dimmed">
                   Registro:{" "}
@@ -421,6 +431,7 @@ const DependentsPage: React.FC = () => {
                   >
                     <IconEdit size={18} />
                   </ActionIcon>
+
                   <ActionIcon
                     variant="subtle"
                     color="red"
