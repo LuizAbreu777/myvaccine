@@ -223,7 +223,7 @@ const Layout: React.FC = () => {
         <Group h="100%" px="md" justify="space-between">
           <Group>
             <ActionIcon variant="subtle" size="lg" onClick={toggle}>
-             <IconMenu2 size={26} color={isDark ? '#003AF1' : '#05164F'} />
+             <IconMenu2 size={26} color={isDark ? '#1F6AF1' : '#05164F'} />
             </ActionIcon>
             <img
               src={isDark ? "/Name-MyvaccineDark.png" : "/Name-Myvaccine.png"}
