@@ -1,0 +1,356 @@
+:root {
+  --landing-white: #ffffff;
+  --landing-blue-50: #eff7ff;
+  --landing-blue-100: #daecff;
+  --landing-blue-200: #bddeff;
+  --landing-blue-300: #90caff;
+  --landing-blue-400: #5bacff;
+  --landing-blue-500: #368afb;
+  --landing-blue-600: #1f6af1;
+  --landing-blue-700: #1854dd;
+  --landing-blue-800: #1840a7;
+  --landing-blue-900: #1b3d8d;
+  --landing-blue-950: #152756;
+}
+
+.landing {
+  background: var(--landing-blue-50);
+  color: var(--landing-blue-950);
+  min-height: 100vh;
+}
+
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 8%;
+  position: sticky;
+  top: 0;
+  background: rgba(239, 247, 255, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+/* --- IMAGENS (public) --- */
+.landing-header__logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.landing-header__logo-img--stacked {
+  height: 52px; /* ajuste se quiser maior */
+}
+
+.landing-slide__image {
+  position: absolute;
+  inset: 0;                 /* era 24px -> isso criava a borda */
+  border-radius: inherit;   /* herda o radius do container */
+  overflow: hidden;
+}
+
+.landing-slide__image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;        /* cobre tudo sem sobras */
+  object-position: center;  /* centraliza o recorte */
+}
+
+
+/* Card das seções: imagem preenche todo o espaço */
+.landing-card__image {
+  padding: 0; /* tira o padding pra imagem preencher */
+  overflow: hidden; /* respeita o radius */
+}
+
+.landing-card__image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.landing-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.landing-header__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.landing-button {
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+.landing-button--ghost {
+  color: var(--landing-blue-900);
+  border-color: var(--landing-blue-200);
+  background: var(--landing-white);
+}
+
+.landing-button--primary {
+  color: var(--landing-white);
+  background: var(--landing-blue-600);
+  border-color: var(--landing-blue-600);
+  box-shadow: 0 14px 30px rgba(31, 106, 241, 0.2);
+}
+
+.landing-button--primary:hover {
+  background: var(--landing-blue-700);
+}
+
+.landing-carousel {
+  padding: 32px 8% 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing-carousel__track {
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 32px;
+  overflow: hidden;
+  background: var(--landing-white);
+  box-shadow: 0 24px 50px rgba(24, 64, 167, 0.12);
+}
+
+.landing-carousel__slides {
+  display: flex;
+  transition: transform 0.6s ease;
+  width: 100%;
+}
+
+.landing-slide {
+  min-width: 100%;
+  position: relative;
+  padding: 48px;
+  min-height: 360px;
+}
+
+.landing-slide__cta {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding-bottom: 24px;
+}
+
+.landing-carousel__bullets {
+  display: flex;
+  gap: 12px;
+}
+
+.landing-carousel__bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: none;
+  background: var(--landing-blue-200);
+  cursor: pointer;
+}
+
+.landing-carousel__bullet--active {
+  width: 32px;
+  background: var(--landing-blue-600);
+}
+
+.landing-sections {
+  padding: 0 8% 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.landing-section h2 {
+  text-align: center;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  margin-bottom: 24px;
+}
+
+.landing-section__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  grid-auto-rows: 300px; /* 🔥 altura fixa do par (ajuste como quiser) */
+}
+
+.landing-section__cards.is-reverse {
+  direction: rtl;
+}
+
+.landing-section__cards.is-reverse > * {
+  direction: ltr;
+}
+
+.landing-card {
+  background: var(--landing-white);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 36px rgba(24, 64, 167, 0.12);
+  height: 100%;
+}
+
+.landing-card--media {
+  padding: 0;            /* remove a “moldura” */
+  overflow: hidden;      /* respeita radius */
+}
+
+
+.landing-card--text h3 {
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+}
+
+.landing-card--text p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.landing-card__image {
+  height: 100%;
+  width: 100%;
+  border-radius: 24px;   /* ou 18px, mas 24px combina com o card */
+  overflow: hidden;
+  padding: 0;            /* remove bordas internas */
+  background: transparent;
+  display: block;        /* não precisa flex aqui */
+}
+
+.landing-card__image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;        /* preenche sempre */
+  object-position: center;  /* centraliza */
+}
+
+.landing-footer {
+  background: var(--landing-blue-950);
+  color: var(--landing-blue-50);
+  padding: 40px 8%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.landing-footer__brand {
+  display: flex;
+  flex-direction: column;   /* 🔥 um embaixo do outro */
+  gap: 6px;
+}
+
+.landing-footer__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--landing-blue-50);
+}
+
+.landing-footer__founders {
+  font-size: 0.9rem;
+  color: rgba(239, 247, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.landing-footer__founders a {
+  color: var(--landing-blue-200);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.landing-footer__founders a:hover {
+  text-decoration: underline;
+}
+
+.landing-footer__links {
+  display: flex;
+  gap: 16px;
+}
+
+.landing-footer a {
+  color: var(--landing-blue-50);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Mobile: ajusta tamanho da logo se precisar */
+@media (max-width: 768px) {
+  .landing-header__logo-img--stacked {
+    height: 48px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .landing-slide {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .landing-header__actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .landing-carousel {
+    padding: 24px 6% 48px;
+  }
+
+  .landing-slide {
+    padding: 32px;
+  }
+
+  .landing-section__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-section__cards.is-reverse {
+    direction: ltr;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-header {
+    padding: 20px 6%;
+  }
+
+  .landing-slide {
+    padding: 24px;
+  }
+
+  .landing-carousel__track {
+    border-radius: 24px;
+  }
+
+  .landing-card {
+    padding: 22px;
+  }
+}
